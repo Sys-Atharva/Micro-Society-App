@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Micro-Society | Welcome</title>
+<!-- Google Fonts: Inter for the Typography Mandate -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols for the Iconography Mandate -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "on-surface": "#0b1c30",
+                    "on-surface-variant": "#45464d",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "secondary": "#4648d4",
+                    "on-primary-fixed": "#131b2e",
+                    "surface-dim": "#cbdbf5",
+                    "inverse-surface": "#213145",
+                    "on-secondary-container": "#fffbff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "surface-tint": "#565e74",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed": "#e1e0ff",
+                    "on-secondary-fixed": "#07006c",
+                    "tertiary": "#000000",
+                    "secondary-container": "#6063ee",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "primary": "#000000",
+                    "outline": "#76777d",
+                    "primary-fixed-dim": "#bec6e0",
+                    "surface-container": "#e5eeff",
+                    "tertiary-fixed": "#e0e3e5",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#818486",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary-fixed": "#191c1e",
+                    "surface-variant": "#d3e4fe",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "tertiary-container": "#191c1e",
+                    "on-primary-container": "#7c839b",
+                    "on-background": "#0b1c30",
+                    "primary-fixed": "#dae2fd",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "primary-container": "#131b2e",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#f8f9ff",
+                    "outline-variant": "#c6c6cd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-xs": "4px",
+                    "gutter-mobile": "16px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "gutter-desktop": "24px",
+                    "stack-lg": "32px",
+                    "margin-desktop": "40px",
+                    "unit": "4px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "caption": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow: hidden; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        /* Custom atmospheric background animation */
+        @keyframes subtle-drift {
+            0% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.05) translate(10px, -10px); }
+            100% { transform: scale(1) translate(0, 0); }
+        }
+        .bg-animate {
+            animation: subtle-drift 15s ease-in-out infinite;
+        }
+        /* Glassmorphism utility */
+        .glass-overlay {
+            background: rgba(11, 28, 48, 0.4);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-on-background h-screen w-screen flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Background Layer: Deep Navy Gradient & Texture -->
+<div class="absolute inset-0 z-0 bg-gradient-to-br from-[#0b1c30] via-[#131b2e] to-[#07006c]">
+<div class="absolute inset-0 opacity-20 bg-animate" style="background-image: radial-gradient(circle at 50% 50%, #4648d4 0%, transparent 70%);">
+</div>
+<div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/stardust.png');">
+</div>
+</div>
+<!-- Main Content Canvas -->
+<main class="relative z-10 flex flex-col items-center text-center px-margin-mobile md:px-margin-desktop space-y-stack-lg">
+<!-- Sophisticated Building Icon Container -->
+<div class="relative group">
+<div class="absolute -inset-8 bg-secondary/20 rounded-full blur-3xl opacity-50 group-hover:opacity-80 transition-opacity duration-1000"></div>
+<div class="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center rounded-2xl bg-surface-container-lowest shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10 relative overflow-hidden">
+<!-- Inner Glow -->
+<div class="absolute inset-0 bg-gradient-to-tr from-secondary/10 to-transparent"></div>
+<span class="material-symbols-outlined text-[48px] md:text-[64px] text-secondary" style="font-variation-settings: 'FILL' 1, 'wght' 200;">domain</span>
+</div>
+</div>
+<!-- Identity & Typography -->
+<div class="space-y-stack-sm flex flex-col items-center">
+<h1 class="font-display-lg text-display-lg text-surface-container-lowest tracking-tight">
+                Micro-Society
+            </h1>
+<p class="font-body-lg text-body-lg text-secondary-fixed-dim opacity-80 tracking-widest uppercase text-[12px] md:text-[14px]">
+                Connected Living
+            </p>
+</div>
+</main>
+<!-- Footer: Loading Indicator & System Status -->
+<footer class="absolute bottom-16 md:bottom-20 z-10 w-full flex flex-col items-center space-y-stack-md">
+<!-- Minimal Loading Indicator -->
+<div class="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full w-0 bg-gradient-to-r from-secondary to-secondary-fixed transition-all duration-300 ease-out" id="loading-bar"></div>
+</div>
+<!-- Status Text -->
+<p class="font-label-md text-label-md text-surface-container-low opacity-40">
+            Initializing secure environment...
+        </p>
+</footer>
+<!-- Atmosphere Overlay Image (Invisible but descriptive for injection) -->
+<div class="fixed inset-0 pointer-events-none z-[1]" data-alt="A cinematic, low-angle shot of a hyper-modern architectural marvel at dusk, featuring sleek glass facades and warm interior lighting that glows softly against a deep navy blue sky. The building’s design is minimalist and geometric, emphasizing a high-trust, premium residential atmosphere. Subtle light trails from a nearby road suggest a connected, vibrant urban society. The overall aesthetic is professional, sophisticated, and deeply serene, matching a corporate minimalist design system with rich indigo and slate tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCE-HdcvbGEyaTGgZz32IxEDDY6R1ZhU3PObCqyMoZikkOy9YFu4YCMBwgO_fcefY5ramLoN92ucKgF8MyNBK77yQBF6qxehJqTe3xhkh33dopRagUCB1GoWMZ-Yn6i_1JRsLC4oLd1NKjOxCdYdKv4zrLSZ0HYfP1vIgq-DMk0zEu59ysW8nt0G6i4NqMA4tXMSt1Afs7TbDVz_DlrdJ2TtoyDawM-NvfKHggGVHBKlrvGphi6ewrqYOBaOmPu43taIlB85tca6a8')">
+</div>
+<!-- Micro-Interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingBar = document.getElementById('loading-bar');
+            let progress = 0;
+            
+            // Simulating a sophisticated loading sequence
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // Subtle haptic feel on completion
+                    setTimeout(() => {
+                        loadingBar.classList.add('shadow-[0_0_15px_#6063ee]');
+                    }, 200);
+                }
+                loadingBar.style.width = `${progress}%`;
+            }, 400);
+
+            // Add subtle mouse-parallax effect to the icon
+            document.addEventListener('mousemove', (e) => {
+                const icon = document.querySelector('.group');
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                icon.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+        });
+    </script>
+</body></html>

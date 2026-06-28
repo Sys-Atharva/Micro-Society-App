@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tenant Profile | Micro-Society</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#76777d",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "secondary-fixed": "#e1e0ff",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "on-primary-fixed": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary": "#4648d4",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-fixed": "#07006c",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container": "#e5eeff",
+                    "on-background": "#0b1c30",
+                    "secondary-container": "#6063ee",
+                    "tertiary-fixed": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "outline-variant": "#c6c6cd",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "tertiary": "#000000",
+                    "inverse-surface": "#213145",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "tertiary-container": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "primary": "#000000",
+                    "surface-variant": "#d3e4fe",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#565e74",
+                    "on-tertiary-container": "#818486",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "stack-xs": "4px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "gutter-desktop": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "20px",
+                    "stack-lg": "32px",
+                    "gutter-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            color: #0b1c30;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nav-shadow {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm flex items-center justify-between px-margin-mobile py-stack-md">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold tracking-tight text-on-surface">Micro-Society</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile max-w-2xl mx-auto">
+<!-- Profile Hero Section -->
+<section class="flex flex-col items-center mb-stack-lg animate-in fade-in slide-in-from-bottom-4 duration-700">
+<div class="relative mb-stack-md">
+<div class="w-32 h-32 rounded-full ring-4 ring-secondary-fixed overflow-hidden shadow-lg">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a modern young professional with a warm smile, set against a soft navy blue gradient background. The lighting is crisp and high-end, reflecting a corporate minimalist aesthetic with clean lines and sophisticated tonality. The overall mood is trustworthy and approachable, fitting for a premium high-trust community application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvXK1bOMZ3FojAvflsvpoFgo78p-DvR4WmgQlDIvWeZSM_BDv240Dgfzl9Jre76VCw9-uX1K7xT1pLZ63gJdKMRRbVujtjHDnSkUhldtU6a0mOnoIysBkJkZsmSTxxi4QTjJ6UdLB3-r9LR1hPySp6F6N0UsrhPR6KFovr5xlROr61E8ZH_e-Z3Hml_ExnDjZtOHSN0_Tui_Homjk3eOlKparPrZjP5XaB-pv0pZsC1m11TQVJMz2t1aY2ody8QdaJx7gDt4fPxTM"/>
+</div>
+<button class="absolute bottom-1 right-1 bg-secondary text-on-secondary p-2 rounded-full shadow-lg hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-1">Alexander Vance</h2>
+<div class="flex items-center gap-2 text-on-surface-variant mb-stack-md">
+<span class="material-symbols-outlined text-secondary" data-icon="domain">domain</span>
+<span class="font-label-md text-label-md">Flat 402, Sovereign Heights</span>
+</div>
+</section>
+<!-- Tenancy Details Card -->
+<section class="glass-card rounded-xl p-6 mb-stack-lg border border-slate-100">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-title-lg text-title-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="description">description</span>
+                    Tenancy Agreement
+                </h3>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Active</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-3 bg-surface-container-low rounded-lg">
+<p class="text-caption text-on-surface-variant mb-1">Contract End</p>
+<p class="font-label-md text-label-md text-on-surface">Oct 24, 2024</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg">
+<p class="text-caption text-on-surface-variant mb-1">Monthly Rent</p>
+<p class="font-label-md text-label-md text-on-surface">£2,450.00</p>
+</div>
+</div>
+<button class="w-full mt-4 py-3 px-4 border border-outline-variant text-on-surface-variant rounded-xl font-label-md text-label-md hover:bg-secondary-container/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                View Full Agreement
+            </button>
+</section>
+<!-- Menu Actions -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-slate-50 hover:bg-surface-container-low transition-colors group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="person_outline">person_outline</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Edit Profile</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-slate-50 hover:bg-surface-container-low transition-colors group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="settings">settings</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Settings</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-slate-50 hover:bg-surface-container-low transition-colors group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="shield">shield</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Privacy &amp; Security</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+<button class="flex items-center justify-between p-4 mt-stack-md bg-white rounded-xl shadow-sm border border-slate-50 hover:bg-error-container/20 transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-error-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="logout">logout</span>
+</div>
+<span class="font-label-md text-label-md text-error">Log Out</span>
+</div>
+</button>
+</nav>
+<footer class="mt-12 text-center text-caption text-outline">
+<p>Micro-Society v2.4.0</p>
+<p class="mt-1">Member since January 2022</p>
+</footer>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface/90 backdrop-blur-xl nav-shadow rounded-t-xl flex justify-around items-center px-4 py-3 pb-6">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="font-label-md text-label-md mt-1">Flats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+<span class="font-label-md text-label-md mt-1">Issues</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span class="font-label-md text-label-md mt-1">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1.5" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-label-md mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple ripple effect for buttons
+        document.querySelectorAll('button, a').forEach(elem => {
+            elem.addEventListener('mousedown', function(e) {
+                this.classList.add('scale-95');
+                setTimeout(() => this.classList.remove('scale-95'), 150);
+            });
+        });
+
+        // Entrance animation orchestration
+        window.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('main > *');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body></html>

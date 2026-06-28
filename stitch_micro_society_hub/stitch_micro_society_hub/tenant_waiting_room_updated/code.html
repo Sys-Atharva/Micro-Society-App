@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Micro-Society | Security Verification</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.33); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        .verification-pulse {
+            position: relative;
+        }
+        .verification-pulse::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #4648d4;
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#76777d",
+                        "on-primary-container": "#7c839b",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#2f2ebe",
+                        "secondary-fixed": "#e1e0ff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-low": "#eff4ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-primary-fixed": "#131b2e",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#dae2fd",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "secondary": "#4648d4",
+                        "on-surface-variant": "#45464d",
+                        "on-secondary-fixed": "#07006c",
+                        "on-secondary-container": "#fffbff",
+                        "surface-container": "#e5eeff",
+                        "on-background": "#0b1c30",
+                        "secondary-container": "#6063ee",
+                        "tertiary-fixed": "#e0e3e5",
+                        "primary-container": "#131b2e",
+                        "outline-variant": "#c6c6cd",
+                        "surface": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "tertiary": "#000000",
+                        "inverse-surface": "#213145",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "secondary-fixed-dim": "#c0c1ff",
+                        "tertiary-container": "#191c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#bec6e0",
+                        "surface-container-high": "#dce9ff",
+                        "background": "#f8f9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-surface": "#0b1c30",
+                        "primary": "#000000",
+                        "surface-variant": "#d3e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "surface-tint": "#565e74",
+                        "on-tertiary-container": "#818486",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-error-container": "#93000a"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-xs": "4px",
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "gutter-desktop": "24px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "20px",
+                        "stack-lg": "32px",
+                        "gutter-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "caption": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden min-h-screen flex flex-col">
+<!-- Header Section (Suppressed Navigation Shell as per Gated Logic) -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm">
+<div class="flex items-center justify-between px-margin-mobile py-stack-md md:px-margin-desktop">
+<span class="font-headline-md-mobile text-headline-md-mobile font-bold tracking-tight text-on-surface">Micro-Society</span>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="help_outline">help_outline</span>
+<span class="font-label-md text-label-md">Support</span>
+</button>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center pt-24 pb-12 px-margin-mobile">
+<div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-12 gap-gutter-desktop items-center">
+<!-- Left Side: Visual & Status -->
+<div class="md:col-span-7 flex flex-col space-y-stack-lg">
+<div class="relative w-full aspect-square md:aspect-video rounded-3xl overflow-hidden shadow-sm group">
+<div class="absolute inset-0 bg-gradient-to-tr from-secondary/40 to-transparent z-10"></div>
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A luxurious modern apartment building facade at twilight, featuring floor-to-ceiling glass windows and elegant architectural lighting. The scene is shot with a high-end architectural photography style, using a professional color palette of deep navy blues, warm interior ambers, and crisp white highlights. The atmosphere is quiet, secure, and prestigious, reflecting a high-trust residential environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBf8u-MmB9kr2vNqplAdsJ0f3sxQavD9N7xTiqFzLxX9oxEjEsZssLYo5FcTpK-E0DWKJnb-tVFfI0Wrk3MQajUv0c9f_zhdnxisY6F4BD8RQKgdrMjYJfNncD75LcD2nlyLkprhEArygWTVMbeWV-Ye21K_5NwhTetuOIk__uB6nZL8wIqSrSVWlu4DVaE2we4tNYjYTHf3J9gbZuFGQaPCticnry3X3w4CTfJXCIBMLK_kq15QIza7oyx1TR0P3_38AK3DO2r1k"/>
+<!-- Overlay Badge -->
+<div class="absolute bottom-6 left-6 z-20 glass-card p-4 rounded-2xl flex items-center gap-4">
+<div class="verification-pulse w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Identity Check</p>
+<p class="text-caption text-on-surface-variant">Active Security Protocol</p>
+</div>
+</div>
+</div>
+<div class="hidden md:flex flex-col space-y-stack-md">
+<h1 class="font-headline-lg text-headline-lg text-on-surface max-w-md">Almost there. We're verifying your residency.</h1>
+<p class="text-body-lg text-on-surface-variant max-w-lg">Your application has been submitted to the building owner. Once approved, you'll gain full access to the Micro-Society community, maintenance requests, and event bookings.</p>
+</div>
+</div>
+<!-- Right Side: Interaction Card -->
+<div class="md:col-span-5">
+<div class="glass-card p-stack-lg rounded-3xl shadow-lg border-secondary/10">
+<div class="flex flex-col items-center text-center space-y-stack-md">
+<div class="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[32px]" data-icon="lock_person">lock_person</span>
+</div>
+<div class="space-y-stack-xs">
+<h2 class="font-title-lg text-title-lg text-on-surface">Waiting for Owner Approval</h2>
+<p class="text-label-md text-on-secondary-container font-semibold px-3 py-1 bg-secondary-container/50 rounded-full inline-block">Verification in Progress</p>
+</div>
+<div class="w-full h-[1px] bg-outline-variant my-4"></div>
+<div class="w-full text-left space-y-stack-md">
+<div class="flex gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<span class="material-symbols-outlined text-secondary" data-icon="schedule">schedule</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Estimated wait time</p>
+<p class="text-caption text-on-surface-variant">2-4 business hours</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<span class="material-symbols-outlined text-secondary" data-icon="domain">domain</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Property</p>
+<p class="text-caption text-on-surface-variant">The Indigo Residences, Unit 402</p>
+</div>
+</div>
+</div>
+<div class="w-full pt-stack-md space-y-stack-sm">
+<button class="w-full bg-secondary text-white py-3.5 rounded-xl font-label-md text-label-md hover:bg-secondary-container transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-secondary/20">
+<span class="material-symbols-outlined text-[18px]" data-icon="notifications_active">notifications_active</span>
+                                Notify me on approval
+                            </button>
+<button class="w-full border border-secondary text-secondary py-3.5 rounded-xl font-label-md text-label-md hover:bg-secondary-fixed transition-all active:scale-95">
+                                Edit Application
+                            </button>
+</div>
+</div>
+</div>
+<!-- Footer Help -->
+<div class="mt-stack-lg text-center md:text-left space-y-stack-sm px-4">
+<p class="text-caption text-on-surface-variant">Need assistance? Contact our 24/7 digital concierge.</p>
+<a class="text-secondary font-label-md text-label-md hover:underline flex items-center justify-center md:justify-start gap-1" href="#">
+                        Help &amp; Support Center
+                        <span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Decorative Mesh (Subtle branding) -->
+<div class="fixed bottom-0 left-0 w-full h-1/3 pointer-events-none opacity-40 overflow-hidden -z-10">
+
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Subtle entrance animations
+            const mainContent = document.querySelector('main');
+            mainContent.style.opacity = '0';
+            mainContent.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                mainContent.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                mainContent.style.opacity = '1';
+                mainContent.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Mock interaction for notification button
+            const notifyBtn = document.querySelector('button:has(span[data-icon="notifications_active"])');
+            notifyBtn.addEventListener('click', () => {
+                const icon = notifyBtn.querySelector('.material-symbols-outlined');
+                const text = notifyBtn.childNodes[2];
+                
+                notifyBtn.classList.replace('bg-secondary', 'bg-surface-container-highest');
+                notifyBtn.classList.replace('text-white', 'text-on-surface');
+                icon.innerText = 'check_circle';
+                icon.style.color = '#4648d4';
+                text.textContent = 'Notifications Enabled';
+                
+                notifyBtn.style.pointerEvents = 'none';
+            });
+        });
+    </script>
+</body></html>

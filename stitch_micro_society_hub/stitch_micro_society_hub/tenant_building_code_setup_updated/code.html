@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Join Your Building | Micro-Society</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#76777d",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "secondary-fixed": "#e1e0ff",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "on-primary-fixed": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary": "#4648d4",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-fixed": "#07006c",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container": "#e5eeff",
+                    "on-background": "#0b1c30",
+                    "secondary-container": "#6063ee",
+                    "tertiary-fixed": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "outline-variant": "#c6c6cd",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "tertiary": "#000000",
+                    "inverse-surface": "#213145",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "tertiary-container": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "primary": "#000000",
+                    "surface-variant": "#d3e4fe",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#565e74",
+                    "on-tertiary-container": "#818486",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "stack-xs": "4px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "gutter-desktop": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "20px",
+                    "stack-lg": "32px",
+                    "gutter-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #0b1c30; }
+        .glass-panel {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(15, 23, 42, 0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-ring:focus-within {
+            ring: 2px;
+            ring-color: #4648d4;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top Navigation Anchor (As per Shared Components JSON logic) -->
+<!-- Suppressing BottomNavBar/SideNav as this is a transactional onboarding screen -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm flex items-center justify-between px-margin-mobile md:px-margin-desktop py-stack-md">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<h1 class="font-headline-md-mobile text-headline-md-mobile md:font-headline-md md:text-headline-md font-bold tracking-tight text-on-surface">Micro-Society</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-secondary-container/10 p-2 rounded-full transition-colors" data-icon="help_outline">help_outline</button>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center pt-24 pb-12 px-margin-mobile">
+<!-- Main Onboarding Container -->
+<div class="w-full max-w-[1200px] grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center">
+<!-- Left: Visual/Context Area -->
+<div class="hidden lg:flex flex-col space-y-stack-md pr-gutter-desktop">
+<div class="inline-flex items-center space-x-2 px-3 py-1 bg-secondary-fixed text-on-secondary-fixed rounded-full w-fit">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified_user">verified_user</span>
+<span class="font-label-md text-label-md">Secure Resident Network</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Experience your <br/><span class="text-secondary">connected community.</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+                    Access building-wide updates, manage flat maintenance, and connect with neighbors in a high-trust digital ecosystem designed for modern living.
+                </p>
+<!-- Graphic Card -->
+<div class="relative group mt-stack-lg h-80 rounded-xl overflow-hidden shadow-sm">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A clean, minimalist high-end residential building lobby with sophisticated architectural lighting and neutral tones. The scene captures a sense of modern professionalism and digital sophistication, featuring glass surfaces and soft indigo accents that reflect a premium Micro-Society brand identity. High-key lighting creates a bright, airy, and secure atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBD7Awi7-IqcthHdCBPLQhxtpBQZU4HIGkX-2tHGPEKXSW6GqkthaYjrLJpwgqCaIDKWamY3K69dO0pO77cSIcSbCITGQ9-UYVbW0e1qT0gAKFPdmqAjEqJdPMmeki-bt4x8dZ6JoiO3l9Ll9G3bVErSiDwyEE610IbTNr12Yj7LGiexK0RZpfB-XNlJnRb-0Yjuo4nTwi1DPHpifNtRLUnvoQCn27zdAF6CJSyObNT2I2HXAeAJkN-NQPVzYMv51gNdy0fciuQtQY')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/60 to-transparent"></div>
+<div class="absolute bottom-6 left-6 text-on-secondary-container">
+<p class="font-headline-md text-headline-md">Skyline Residency</p>
+<p class="font-body-md text-body-md opacity-90">Central District, Metropolis</p>
+</div>
+</div>
+</div>
+<!-- Right: Action Form -->
+<div class="flex flex-col items-center">
+<div class="w-full max-w-md glass-panel p-8 md:p-10 rounded-xl shadow-[0_2px_10px_rgba(15,23,42,0.05)] flex flex-col space-y-stack-lg">
+<div class="text-center lg:text-left space-y-stack-xs">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile lg:font-headline-md lg:text-headline-md text-on-surface font-bold">Join Your Building</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Enter the details provided by your building manager.</p>
+</div>
+<form class="space-y-stack-md" onsubmit="event.preventDefault();">
+<!-- Unique Building Code -->
+<div class="space-y-stack-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="building-code">Unique Building Code</label>
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-secondary transition-colors" data-icon="domain_verification">domain_verification</span>
+<input class="w-full h-[52px] pl-12 pr-4 rounded-xl border border-slate-200 bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none font-body-md text-on-surface transition-all placeholder:text-slate-400" id="building-code" placeholder="e.g. MS-8829-QX" type="text"/>
+</div>
+</div>
+<!-- Flat Number Dropdown -->
+<div class="space-y-stack-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="flat-number">Flat Number</label>
+<div class="relative group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-secondary transition-colors" data-icon="door_front">door_front</span>
+<select class="w-full h-[52px] pl-12 pr-10 rounded-xl border border-slate-200 bg-white focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none font-body-md text-on-surface transition-all appearance-none cursor-pointer" id="flat-number">
+<option disabled="" selected="" value="">Select your unit</option>
+<option value="101">Flat 101 - Level 1</option>
+<option value="102">Flat 102 - Level 1</option>
+<option value="201">Flat 201 - Level 2</option>
+<option value="202">Flat 202 - Level 2</option>
+<option value="301">Flat 301 - Level 3</option>
+<option value="302">Flat 302 - Level 3</option>
+<option value="405">Penthouse 405</option>
+</select>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Security Notice -->
+<div class="flex items-start gap-3 p-3 bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-on-primary-container text-[20px] mt-0.5" data-icon="info">info</span>
+<p class="font-caption text-caption text-on-primary-container">
+                                Access requests are reviewed by the building administrator. You will receive a notification once your residency is verified.
+                            </p>
+</div>
+<!-- Submit Button -->
+<button class="w-full h-[52px] bg-secondary hover:bg-secondary-container text-on-secondary font-label-md text-label-md rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 group shadow-md hover:shadow-lg" type="submit">
+                            Request Access
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<div class="pt-stack-md flex flex-col items-center gap-stack-sm">
+<p class="font-caption text-caption text-outline">Don't have a code?</p>
+<button class="text-secondary font-label-md text-label-md hover:underline">Contact Property Management</button>
+</div>
+</div>
+<!-- Trust Badges Mobile -->
+<div class="flex lg:hidden mt-stack-lg items-center gap-gutter-mobile opacity-60">
+<span class="material-symbols-outlined" data-icon="encrypted">encrypted</span>
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="material-symbols-outlined" data-icon="gpp_good">gpp_good</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Identity -->
+<footer class="py-stack-lg px-margin-mobile text-center">
+<p class="font-caption text-caption text-outline-variant">© 2024 Micro-Society Inc. Distributed Ledger Residency Verification.</p>
+</footer>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btnText = submitBtn.childNodes[0];
+                const btnIcon = submitBtn.querySelector('span');
+                
+                // Transition to loading state
+                submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+                submitBtn.innerHTML = `
+                    <span class="animate-spin material-symbols-outlined" data-icon="progress_activity">progress_activity</span>
+                    Processing...
+                `;
+                
+                // Simulate network request
+                setTimeout(() => {
+                    submitBtn.innerHTML = `
+                        <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                        Request Sent
+                    `;
+                    submitBtn.classList.remove('bg-secondary');
+                    submitBtn.classList.add('bg-green-600');
+                    
+                    // Reset or Redirect logic would go here
+                    setTimeout(() => {
+                         window.location.reload();
+                    }, 2000);
+                }, 1500);
+            });
+
+            // Input field focus effects
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('scale-[1.01]');
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('scale-[1.01]');
+                });
+            });
+        });
+    </script>
+</body></html>

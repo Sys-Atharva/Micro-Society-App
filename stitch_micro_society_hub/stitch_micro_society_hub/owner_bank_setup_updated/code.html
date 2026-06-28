@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Payment Setup | Micro-Society</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#76777d",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "secondary-fixed": "#e1e0ff",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "on-primary-fixed": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary": "#4648d4",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-fixed": "#07006c",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container": "#e5eeff",
+                    "on-background": "#0b1c30",
+                    "secondary-container": "#6063ee",
+                    "tertiary-fixed": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "outline-variant": "#c6c6cd",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "tertiary": "#000000",
+                    "inverse-surface": "#213145",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "tertiary-container": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "primary": "#000000",
+                    "surface-variant": "#d3e4fe",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#565e74",
+                    "on-tertiary-container": "#818486",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "stack-xs": "4px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "gutter-desktop": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "20px",
+                    "stack-lg": "32px",
+                    "gutter-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+            color: #0b1c30;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(70, 72, 212, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col items-center">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm flex items-center justify-between px-margin-mobile py-stack-md md:px-margin-desktop">
+<div class="flex items-center gap-stack-sm">
+<button class="p-2 hover:bg-secondary-container/10 transition-colors rounded-full active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold tracking-tight text-on-surface">Payment Setup</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-on-surface-variant">security</span>
+<span class="hidden md:block font-label-md text-label-md text-on-surface-variant">Secure Connection</span>
+</div>
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-2xl px-margin-mobile pt-32 pb-40 flex-grow">
+<!-- Progress Header -->
+<div class="mb-stack-lg">
+<div class="flex justify-between items-center mb-stack-sm">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Step 2 of 3</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Onboarding</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-2/3 rounded-full"></div>
+</div>
+</div>
+<!-- Introductory Card -->
+<div class="mb-stack-lg flex items-center gap-stack-md p-stack-md bg-secondary-fixed/30 rounded-xl border border-secondary-fixed">
+<div class="w-12 h-12 bg-secondary-container flex items-center justify-center rounded-lg text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h2 class="font-title-lg text-title-lg text-on-background">Verify Bank Details</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Please provide your settlement account details for society fund transfers.</p>
+</div>
+</div>
+<!-- Form Section -->
+<div class="bg-white rounded-2xl shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant/30 p-stack-lg space-y-stack-lg">
+<!-- Bank Name -->
+<div class="space-y-stack-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant" for="bank_name">Bank Name</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">domain</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:ring-0 transition-all font-body-md text-body-md" id="bank_name" placeholder="e.g. National Trust Bank" type="text"/>
+</div>
+</div>
+<!-- Account Number -->
+<div class="space-y-stack-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant" for="account_number">Account Number</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">credit_card</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:ring-0 transition-all font-body-md text-body-md" id="account_number" placeholder="Enter your 10-16 digit number" type="text"/>
+</div>
+<p class="font-caption text-caption text-on-surface-variant">We encrypt your sensitive data with AES-256 standards.</p>
+</div>
+<!-- IFSC / Routing Code -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="space-y-stack-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant" for="routing_code">Routing / IFSC Code</label>
+<input class="w-full px-4 py-3 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:ring-0 transition-all font-body-md text-body-md uppercase" id="routing_code" placeholder="ABCD0123456" type="text"/>
+</div>
+<div class="space-y-stack-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant" for="account_type">Account Type</label>
+<select class="w-full px-4 py-3 bg-surface-bright border border-outline-variant rounded-xl focus:border-secondary focus:ring-0 transition-all font-body-md text-body-md appearance-none" id="account_type">
+<option>Current Account</option>
+<option>Savings Account</option>
+<option>Business Account</option>
+</select>
+</div>
+</div>
+<div class="pt-stack-md">
+<div class="flex items-start gap-stack-sm p-4 bg-surface-container-low rounded-xl">
+<input class="mt-1 h-4 w-4 text-secondary border-outline rounded focus:ring-secondary" id="terms" type="checkbox"/>
+<label class="font-caption text-caption text-on-surface-variant" for="terms">
+                        I confirm that the bank details provided above belong to the owner of this micro-society entity and I authorize verification through a penny-drop transaction.
+                    </label>
+</div>
+</div>
+</div>
+<!-- Decorative Assurance Section -->
+<div class="mt-stack-lg grid grid-cols-3 gap-stack-sm">
+<div class="flex flex-col items-center text-center p-stack-sm">
+<span class="material-symbols-outlined text-secondary mb-2" style="font-variation-settings: 'opsz' 32;">verified_user</span>
+<span class="font-caption text-caption text-on-surface-variant">PCI-DSS Compliant</span>
+</div>
+<div class="flex flex-col items-center text-center p-stack-sm">
+<span class="material-symbols-outlined text-secondary mb-2" style="font-variation-settings: 'opsz' 32;">lock</span>
+<span class="font-caption text-caption text-on-surface-variant">SSL Encrypted</span>
+</div>
+<div class="flex flex-col items-center text-center p-stack-sm">
+<span class="material-symbols-outlined text-secondary mb-2" style="font-variation-settings: 'opsz' 32;">visibility_off</span>
+<span class="font-caption text-caption text-on-surface-variant">Private Data</span>
+</div>
+</div>
+</main>
+<!-- Fixed Action Button / Bottom Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 p-margin-mobile flex justify-center z-40">
+<div class="w-full max-w-2xl flex gap-stack-md">
+<button class="flex-1 py-3 px-6 rounded-xl border border-outline-variant font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high transition-all active:scale-95">
+                Save for later
+            </button>
+<button class="flex-[2] py-3 px-6 bg-secondary text-white rounded-xl font-label-md text-label-md shadow-lg shadow-secondary/20 hover:bg-secondary-container transition-all active:scale-95 flex items-center justify-center gap-2">
+                Save &amp; Continue
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Visual Accents: Decorative background elements -->
+<div class="fixed top-0 left-0 -z-10 w-full h-full pointer-events-none overflow-hidden">
+<div class="absolute -top-24 -right-24 w-96 h-96 bg-secondary-fixed/20 rounded-full blur-3xl"></div>
+<div class="absolute top-1/2 -left-48 w-[500px] h-[500px] bg-primary-fixed/10 rounded-full blur-[100px]"></div>
+</div>
+<script>
+        // Micro-interactions for input focus states
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('focus', () => {
+                element.parentElement.classList.add('scale-[1.01]');
+                element.parentElement.style.transition = 'transform 0.2s ease-out';
+            });
+            element.addEventListener('blur', () => {
+                element.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Simple button active state feedback
+        const primaryBtn = document.querySelector('button.bg-secondary');
+        primaryBtn.addEventListener('click', function() {
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span>';
+            setTimeout(() => {
+                this.innerHTML = originalContent;
+            }, 1500);
+        });
+    </script>
+</body></html>

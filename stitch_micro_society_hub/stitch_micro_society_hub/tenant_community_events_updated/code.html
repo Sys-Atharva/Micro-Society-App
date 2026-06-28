@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community Events - Micro-Society</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#76777d",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "secondary-fixed": "#e1e0ff",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "on-primary-fixed": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary": "#4648d4",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-fixed": "#07006c",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container": "#e5eeff",
+                    "on-background": "#0b1c30",
+                    "secondary-container": "#6063ee",
+                    "tertiary-fixed": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "outline-variant": "#c6c6cd",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "tertiary": "#000000",
+                    "inverse-surface": "#213145",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "tertiary-container": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "primary": "#000000",
+                    "surface-variant": "#d3e4fe",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#565e74",
+                    "on-tertiary-container": "#818486",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "stack-xs": "4px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "gutter-desktop": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "20px",
+                    "stack-lg": "32px",
+                    "gutter-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .feed-gradient { background: linear-gradient(180deg, rgba(248, 249, 255, 0) 0%, #f8f9ff 100%); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 dark:bg-surface-container-high/80 backdrop-blur-md shadow-sm dark:shadow-none">
+<div class="flex items-center justify-between px-margin-mobile py-stack-md w-full md:px-margin-desktop">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="menu">menu</span>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold tracking-tight text-on-surface">Micro-Society</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="notifications">notifications</span>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Hero Section / Featured Event -->
+<section class="mb-stack-lg">
+<div class="relative w-full h-[300px] md:h-[450px] rounded-xl overflow-hidden shadow-sm group cursor-pointer">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A sophisticated evening rooftop mixer at sunset, featuring a modern architectural skyline. The scene is illuminated by warm string lights and soft indigo ambient lighting. Guests are dressed in smart-casual attire, holding elegant glasses, creating an atmosphere of professional social networking and luxury urban living. The aesthetic is clean, high-contrast, and modern." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD9oV4sHFLr1HHimDVLqPe3HR9qZV90QCjoQJ0ypfvbSIHjXzhE8_UhcZTWjwjFW5SoTFqpse4fApa-QT1ozoRgsLA8yI5YSLV44x-thRNP8oD6E8gfajmrD0lWBVo5lkbR_CsEo4fTSc6DXJdQrehmhq2BDxJGMzfmvM8VB84SR6S5vofbHm9GUXMuNI5_gW4R_Wamg8f4wKimFB5qxnrUgGLiodQfJ6OSR6ibxGE8zsb3v4yBorm2ae-rMAKej8RzrZBnRlLR48U')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/90 via-primary-container/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-stack-lg text-white">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-lg text-label-md font-label-md mb-stack-sm inline-block">Featured Event</span>
+<h2 class="font-headline-lg text-headline-lg mb-2">Annual Rooftop Summer Mixer</h2>
+<p class="font-body-md text-body-md opacity-90 max-w-xl">Join your neighbors for an evening of artisanal cocktails, live jazz, and the best sunset views in the city. Exclusive to building residents.</p>
+<div class="mt-stack-md flex gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-md font-label-md">August 24, 7:00 PM</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-label-md font-label-md">Sky Lounge, Floor 42</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="flex flex-col lg:flex-row gap-gutter-desktop">
+<!-- Main Feed -->
+<div class="flex-1 space-y-stack-lg">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-primary">Community Stream</h3>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container-high rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-secondary-container hover:text-white transition-colors">All</button>
+<button class="px-4 py-2 bg-white border border-outline-variant rounded-full font-label-md text-label-md text-on-surface-variant hover:border-secondary transition-colors">Events</button>
+<button class="px-4 py-2 bg-white border border-outline-variant rounded-full font-label-md text-label-md text-on-surface-variant hover:border-secondary transition-colors">Notices</button>
+</div>
+</div>
+<!-- Event Card 1 -->
+<article class="bg-white rounded-xl overflow-hidden border border-slate-100 shadow-[0_2px_4px_rgba(15,23,42,0.05)] hover:shadow-lg transition-shadow duration-300">
+<div class="flex flex-col md:flex-row">
+<div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="A bright, professionally organized community meeting room with sleek Scandinavian furniture. Residents are seated in an airy space with large windows, engaged in a discussion. The lighting is natural and high-key, emphasizing a clean and democratic atmosphere. The color palette is dominated by soft whites, grays, and deep indigo accents." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPEtErGgankN3-Td0BUUMmg4ZzQiLrglccH8a5dERo7UpHrLh6yKtPBZbxIqBD0_7pZid57NBxXA_xa0E0Qw8rYpDbidPSa5RthERnaQl-3-bGs_5i65oY3J1d5cAclzJfhXnGgGrpIijOAj6aohRKxOkjos3R0MGXpRs-ACXWOJTnZTCwHd0lQ1A3YNeaSCgBBv6rKpgXUQ437qSMZUfR-9CiKo5IVeq5f4bcOKFW_KPgdzG0Bcrh-5-3dvGxIPmpcsLy9FXz_Zg')">
+</div>
+</div>
+<div class="p-stack-md md:p-stack-lg flex-1">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-wider">Building Meeting</span>
+<span class="bg-surface-container text-on-primary-fixed-variant px-3 py-1 rounded-full text-caption">Mandatory</span>
+</div>
+<h4 class="font-title-lg text-title-lg mb-2">Quarterly Residents Council</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md line-clamp-2">Discussion of upcoming facility upgrades, security protocols, and the annual budget review. Your presence and input are requested for voting on new amenities.</p>
+<div class="flex items-center justify-between mt-auto pt-stack-sm border-t border-slate-50">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+<span class="text-label-md font-label-md">6:30 PM</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="group">group</span>
+<span class="text-label-md font-label-md">24 attending</span>
+</div>
+</div>
+<button class="text-secondary font-label-md text-label-md flex items-center gap-1 hover:gap-2 transition-all">
+                                    Details <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Event Card 2 (Announcement style) -->
+<article class="bg-white rounded-xl p-stack-lg border border-slate-100 shadow-[0_2px_4px_rgba(15,23,42,0.05)] relative overflow-hidden">
+<div class="absolute top-0 right-0 p-stack-sm">
+<span class="material-symbols-outlined text-outline-variant opacity-20 text-6xl" data-icon="campaign" style="font-variation-settings: 'FILL' 1;">campaign</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-stack-sm">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="engineering">engineering</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg leading-tight">Elevator Maintenance Notice</h4>
+<p class="text-caption font-caption text-on-surface-variant">Posted 2 hours ago • Management</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">Elevators 3 and 4 in the West Wing will be undergoing scheduled safety inspections tomorrow between 10:00 AM and 2:00 PM. Please use the East Wing elevators during this window.</p>
+<div class="bg-surface-container-low p-stack-sm rounded-lg flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="info">info</span>
+<span class="text-label-md font-label-md text-on-primary-fixed-variant">Impact: Low - All other elevators remain operational.</span>
+</div>
+</div>
+</article>
+<!-- Event Card 3 -->
+<article class="bg-white rounded-xl overflow-hidden border border-slate-100 shadow-[0_2px_4px_rgba(15,23,42,0.05)] hover:shadow-lg transition-shadow duration-300">
+<div class="flex flex-col md:flex-row">
+<div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="A serene indoor garden or courtyard with modern furniture and lush green plants. Morning sunlight filters through a glass ceiling, creating a peaceful, Zen-like atmosphere. A small group of residents is gathered for a weekend brunch. The style is minimalist and high-end, focusing on wellness and community." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDxCGPBFwxN7KGoNjqz3p-YXPM9tr0r_3_c5FF7xh4DeXMOrWqGWsxvssVelJYYjfGBpDQRXIJWhAJp-rCzQdrYC5z9RzQr5LITjH36lX36QMTCBrHiX-9wvoYm7RilkGWU6RaK0czzBBdWNVCv9lfZrt7aLn2-YbOReNSHnKDlEpvYa38YpNXl5JZCBH8xRtk1Dl_UYw414eHVRPXQCNWko-hbIqmX1BcdsdRTlE-XeVrA8t814gsR39F86V8mfmGIKKkdzwyd9v0')">
+</div>
+</div>
+<div class="p-stack-md md:p-stack-lg flex-1">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-wider">Social Event</span>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-caption">RSVP Required</span>
+</div>
+<h4 class="font-title-lg text-title-lg mb-2">Weekend Courtyard Brunch</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">Start your Sunday with freshly baked pastries, organic fruits, and mimosas in the Garden Courtyard. A perfect chance to meet your new neighbors in a relaxed setting.</p>
+<div class="flex items-center justify-between mt-auto pt-stack-sm border-t border-slate-50">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="event">event</span>
+<span class="text-label-md font-label-md">Sunday, 11:00 AM</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="restaurant">restaurant</span>
+<span class="text-label-md font-label-md">Catering Provided</span>
+</div>
+</div>
+<button class="bg-secondary text-white px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-secondary-container transition-colors">Join Event</button>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Sidebar -->
+<aside class="lg:w-80 space-y-stack-lg">
+<!-- Bento Grid Sidebar Element: Stats -->
+<div class="glass p-stack-lg rounded-xl">
+<h5 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-stack-md">Community Pulse</h5>
+<div class="grid grid-cols-2 gap-stack-sm">
+<div class="bg-white p-stack-sm rounded-lg border border-slate-100">
+<p class="text-caption text-on-surface-variant">Active Members</p>
+<p class="text-headline-md font-headline-md text-secondary">412</p>
+</div>
+<div class="bg-white p-stack-sm rounded-lg border border-slate-100">
+<p class="text-caption text-on-surface-variant">Next Event</p>
+<p class="text-headline-md font-headline-md text-secondary">2d</p>
+</div>
+</div>
+</div>
+<!-- Calendar Widget -->
+<div class="bg-white p-stack-lg rounded-xl border border-slate-100 shadow-sm">
+<div class="flex items-center justify-between mb-stack-md">
+<h5 class="font-title-lg text-title-lg">August</h5>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="chevron_left">chevron_left</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<div class="grid grid-cols-7 text-center text-caption font-label-md mb-stack-sm text-outline">
+<div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+</div>
+<div class="grid grid-cols-7 text-center gap-y-2">
+<div class="text-outline-variant py-1">28</div>
+<div class="text-outline-variant py-1">29</div>
+<div class="text-outline-variant py-1">30</div>
+<div class="text-outline-variant py-1">31</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">1</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">2</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">3</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">4</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">5</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">6</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">7</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">8</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">9</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">10</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">11</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">12</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">13</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">14</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">15</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">16</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">17</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">18</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">19</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">20</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">21</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">22</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">23</div>
+<div class="py-1 bg-secondary text-white rounded-full cursor-pointer">24</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">25</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">26</div>
+<div class="py-1 hover:bg-surface-container rounded-full cursor-pointer transition-colors">27</div>
+</div>
+</div>
+<!-- Recent Announcements (Mini List) -->
+<div class="bg-white p-stack-lg rounded-xl border border-slate-100 shadow-sm">
+<h5 class="font-title-lg text-title-lg mb-stack-md">Recent News</h5>
+<div class="space-y-stack-md">
+<div class="flex gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary mt-2"></div>
+<div>
+<p class="text-label-md font-label-md leading-tight">New Gym Equipment Arrived</p>
+<p class="text-caption text-outline">Yesterday</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-2 h-2 rounded-full bg-outline-variant mt-2"></div>
+<div>
+<p class="text-label-md font-label-md leading-tight">Lobby Painting Finished</p>
+<p class="text-caption text-outline">3 days ago</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-2 h-2 rounded-full bg-outline-variant mt-2"></div>
+<div>
+<p class="text-label-md font-label-md leading-tight">Updated Recycling Policy</p>
+<p class="text-caption text-outline">Aug 12</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface/90 dark:bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50 rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-label-md font-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="text-label-md font-label-md">Flats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+<span class="text-label-md font-label-md">Issues</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span class="text-label-md font-label-md">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-label-md font-label-md">Profile</span>
+</a>
+</nav>
+<!-- Desktop Nav (Simulated Top row links as per TopAppBar cluster instruction) -->
+<div class="hidden md:flex fixed top-0 left-1/2 -translate-x-1/2 z-[60] h-[64px] items-center gap-8">
+<a class="text-on-surface-variant hover:text-secondary font-label-md transition-colors" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-secondary font-label-md transition-colors" href="#">Flats</a>
+<a class="text-on-surface-variant hover:text-secondary font-label-md transition-colors" href="#">Issues</a>
+<a class="text-secondary font-semibold font-label-md" href="#">Events</a>
+<a class="text-on-surface-variant hover:text-secondary font-label-md transition-colors" href="#">Profile</a>
+</div>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('article').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+                card.style.transition = 'transform 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Sticky Header Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.add('shadow-sm');
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>

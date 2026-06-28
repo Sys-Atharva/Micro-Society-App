@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Issues Management Center | Micro-Society</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#76777d",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "secondary-fixed": "#e1e0ff",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "on-primary-fixed": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary": "#4648d4",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-fixed": "#07006c",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container": "#e5eeff",
+                    "on-background": "#0b1c30",
+                    "secondary-container": "#6063ee",
+                    "tertiary-fixed": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "outline-variant": "#c6c6cd",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "tertiary": "#000000",
+                    "inverse-surface": "#213145",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "tertiary-container": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "primary": "#000000",
+                    "surface-variant": "#d3e4fe",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#565e74",
+                    "on-tertiary-container": "#818486",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "stack-xs": "4px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "gutter-desktop": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "20px",
+                    "stack-lg": "32px",
+                    "gutter-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .issue-card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(15, 23, 42, 0.08);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-24 md:pb-0 md:pt-20">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 dark:bg-surface-container-high/80 backdrop-blur-md shadow-sm dark:shadow-none">
+<div class="flex items-center justify-between px-margin-mobile py-stack-md w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed active:scale-95 transition-transform duration-200">menu</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold tracking-tight text-on-surface dark:text-on-surface-variant">Micro-Society</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline hover:bg-secondary-container/10 transition-colors px-3 py-1 rounded-full" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline hover:bg-secondary-container/10 transition-colors px-3 py-1 rounded-full" href="#">Flats</a>
+<a class="font-label-md text-label-md text-secondary dark:text-secondary-fixed font-semibold px-3 py-1 rounded-full" href="#">Issues</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline hover:bg-secondary-container/10 transition-colors px-3 py-1 rounded-full" href="#">Events</a>
+</nav>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed active:scale-95 transition-transform duration-200">notifications</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop pt-8 pb-12">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-lg mb-stack-lg">
+<div>
+<span class="text-secondary font-label-md text-label-md uppercase tracking-widest">Maintenance Hub</span>
+<h2 class="font-headline-lg text-headline-lg mt-2">Issues Management</h2>
+<p class="text-on-surface-variant font-body-md text-body-md mt-stack-xs max-w-xl">Track and manage service requests for your property units. View real-time status updates and resolution timelines.</p>
+</div>
+<div class="flex gap-stack-sm">
+<button class="bg-secondary text-on-secondary px-6 py-2.5 rounded-xl font-label-md text-label-md flex items-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined">add</span>
+                    New Request
+                </button>
+</div>
+</div>
+<!-- Dashboard Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter-desktop mb-stack-lg">
+<div class="glass-panel p-stack-md rounded-2xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container">assignment</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md">Total Requests</p>
+<p class="font-headline-md text-headline-md">24</p>
+</div>
+</div>
+<div class="glass-panel p-stack-md rounded-2xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-error-container">priority_high</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md">Open</p>
+<p class="font-headline-md text-headline-md">08</p>
+</div>
+</div>
+<div class="glass-panel p-stack-md rounded-2xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">pending</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md">In Progress</p>
+<p class="font-headline-md text-headline-md">12</p>
+</div>
+</div>
+<div class="glass-panel p-stack-md rounded-2xl flex items-center gap-4 border-l-4 border-l-secondary">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant">check_circle</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-md text-label-md">Resolved</p>
+<p class="font-headline-md text-headline-md">04</p>
+</div>
+</div>
+</div>
+<!-- Filter & Search Bar -->
+<div class="glass-panel p-4 rounded-2xl mb-stack-lg flex flex-wrap gap-4 items-center">
+<div class="flex-1 min-w-[280px] relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-secondary/20 font-body-md text-body-md" placeholder="Search by issue, unit, or technician..." type="text"/>
+</div>
+<div class="flex gap-2">
+<select class="bg-surface-container-low border-none rounded-xl py-2.5 px-4 font-label-md text-label-md focus:ring-2 focus:ring-secondary/20">
+<option>All Statuses</option>
+<option>Open</option>
+<option>In Progress</option>
+<option>Resolved</option>
+</select>
+<select class="bg-surface-container-low border-none rounded-xl py-2.5 px-4 font-label-md text-label-md focus:ring-2 focus:ring-secondary/20">
+<option>All Units</option>
+<option>Unit 402</option>
+<option>Unit 105</option>
+<option>Unit 882</option>
+</select>
+<button class="w-11 h-11 flex items-center justify-center bg-surface-container-low rounded-xl text-outline hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+<!-- Issues List -->
+<div class="lg:col-span-7 space-y-4">
+<!-- Issue Card 1 -->
+<div class="glass-panel p-5 rounded-2xl issue-card-hover transition-all cursor-pointer border-l-4 border-l-error">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<span class="bg-error-container text-on-error-container px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Open</span>
+<span class="font-label-md text-label-md text-outline">#REQ-4029</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-secondary">Unit 402</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-1">Water Leaking from HVAC</h3>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-2">Noticeable moisture around the ceiling vent in the primary bedroom. Possible drainage blockage or condenser issue.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm">schedule</span>
+<span class="font-caption text-caption text-outline">Reported 2 hours ago</span>
+</div>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-slate-200 overflow-hidden" title="Assigned Technician">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a friendly maintenance technician in a blue uniform, studio lighting, clean corporate style, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATeAxcoVRGM9ROTQ4oCt3gNlX2YbmFmfnEm-DAwm0XnOVb9L_BPj-NOPmnyPCbyoF1uEJdK5afaZ8JKwYXJBVKtu_Ya2eoSLmqqCpIcB_1AKYH4Gq7BkKE2RtwY9r4k4iuqmEM8TRjFm2G72BlUaZs0QT_83BceYEmvcJn78rcBH8rh7_1jJY5wT4K_HjxQY-ipU2S5bSNaQ_pCxMChs4Yn9MPI6bUms9Kov9JTLTlAzqvEg2nJstOzbjWVARL-Iq3vsOWUETxrtQ"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Issue Card 2 -->
+<div class="glass-panel p-5 rounded-2xl issue-card-hover transition-all cursor-pointer border-l-4 border-l-secondary-container">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<span class="bg-secondary-container text-on-secondary-container px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">In Progress</span>
+<span class="font-label-md text-label-md text-outline">#REQ-3821</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-secondary">Unit 105</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-1">Electronic Lock Malfunction</h3>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-2">Smart lock is not responding to mobile app or keypad. Battery replaced but issue persists.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm">engineering</span>
+<span class="font-caption text-caption text-outline">Technician onsite since 10:30 AM</span>
+</div>
+<span class="font-label-md text-label-md text-secondary">Est. Resolve: 1h</span>
+</div>
+</div>
+<!-- Issue Card 3 -->
+<div class="glass-panel p-5 rounded-2xl issue-card-hover transition-all cursor-pointer border-l-4 border-l-secondary-fixed">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Resolved</span>
+<span class="font-label-md text-label-md text-outline">#REQ-3770</span>
+</div>
+<span class="font-body-md text-body-md font-medium text-secondary">Unit 882</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-1">Common Area Light Out</h3>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-2">LED panel in the floor 8 corridor is flickering. Reported by cleaning staff during rounds.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 text-green-600">
+<span class="material-symbols-outlined text-sm">verified</span>
+<span class="font-caption text-caption">Completed yesterday</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Detail View / Side Panel -->
+<aside class="lg:col-span-5 sticky top-24">
+<div class="glass-panel rounded-2xl overflow-hidden shadow-lg border-2 border-secondary/10">
+<div class="p-6 bg-primary-container text-on-primary-container">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-md text-headline-md text-white">Details: Unit 402</h3>
+<button class="material-symbols-outlined text-white/70 hover:text-white">close</button>
+</div>
+<p class="text-primary-fixed-dim font-body-md text-body-md mt-1">Water Leaking from HVAC (Internal)</p>
+</div>
+<div class="p-6 space-y-6">
+<!-- Evidence Gallery -->
+<div class="grid grid-cols-2 gap-2">
+<div class="h-32 rounded-xl bg-slate-100 overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of a water damaged ceiling with a visible damp spot around a modern white metal air conditioning vent, soft indoor lighting, architectural detail, professional photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzLbbzZDxrOYRBpzGcrL8PsYpTZum18-a93Wn1Hv8c9o5Hj-3-mHQVkq25PJm8fBB_9CyiwMH2BmIgzJADCAh7tkVvLfqooU0IGAUzbLH8jxm-KoNHQZntSk03FACISOfJQaCqwaR-K30Z09jAt8fuzQmPmJf6reCsDKpRp6DSIoBrXPCjxyP-MA4SsFTQWVuPKcIXizX4fDZZp5MxNDF4vetDvLuEoORZ1KGTQp4jUg-D5OfcfcsXgCc5diXulbQg7e3z-9NXg8Y"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white">zoom_in</span>
+</div>
+</div>
+<div class="h-32 rounded-xl bg-slate-100 overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="Close up shot of a digital thermostat showing an error code, mounted on a grey minimalist wall, shallow depth of field, high-tech modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsQTt6kQ9h9Ji-Ipr_xBJNT-oZ2oKak0M324z3g42Up__OItizNstH5nlRncRHa6S0r_jpNF6LY3B_idEiDqzwOOmlh71IF7jQYqsF_oxXRjpKRkCaM6v64uRr6KrB7BMLHIsnvzh9cv5ja25YKogNB0Wsl9k-VavSRziqvyrKUxqWlBqK3F_LUJ5ekbghpjka7GEZEajGYyViy6OadHWbmEJP7IlQ3mkkEHuxxPRHBkGrrWqr6BA7CzV07jpnrkhcEvs6bWUM7f0"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white">zoom_in</span>
+</div>
+</div>
+</div>
+<!-- Timeline -->
+<div>
+<h4 class="font-label-md text-label-md uppercase text-outline mb-4">Activity Timeline</h4>
+<div class="space-y-4 relative before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-outline-variant">
+<div class="flex gap-4 relative">
+<div class="w-[24px] h-[24px] rounded-full bg-error flex items-center justify-center z-10 border-4 border-surface">
+<span class="material-symbols-outlined text-[12px] text-white font-bold">priority_high</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Issue Reported</p>
+<p class="font-caption text-caption text-outline">Today, 08:42 AM by John D. (Owner)</p>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="w-[24px] h-[24px] rounded-full bg-secondary flex items-center justify-center z-10 border-4 border-surface">
+<span class="material-symbols-outlined text-[12px] text-white font-bold">assignment_ind</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Technician Dispatched</p>
+<p class="font-caption text-caption text-outline">Today, 09:15 AM - Sarah Chen assigned</p>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="w-[24px] h-[24px] rounded-full bg-outline-variant flex items-center justify-center z-10 border-4 border-surface">
+<span class="material-symbols-outlined text-[12px] text-white font-bold">chat</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Note Added</p>
+<p class="font-caption text-caption text-outline">Waiting for access to utility closet.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-4 flex gap-3">
+<button class="flex-1 bg-surface-container-high text-on-surface-variant font-label-md text-label-md py-3 rounded-xl hover:bg-surface-variant transition-colors">Call Technician</button>
+<button class="flex-1 bg-secondary text-on-secondary font-label-md text-label-md py-3 rounded-xl shadow-md">Update Status</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface/90 backdrop-blur-xl rounded-t-xl shadow-[0_-2px_10px_rgba(0,0,0,0.05)] flex justify-around items-center px-4 py-3 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">domain</span>
+<span class="font-label-md text-[10px]">Flats</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">report_problem</span>
+<span class="font-label-md text-[10px]">Issues</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">event</span>
+<span class="font-label-md text-[10px]">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-[10px]">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('.issue-card-hover').forEach(card => {
+            card.addEventListener('click', () => {
+                // Flash interaction
+                card.classList.add('bg-secondary-container/5');
+                setTimeout(() => card.classList.remove('bg-secondary-container/5'), 200);
+            });
+        });
+    </script>
+</body></html>

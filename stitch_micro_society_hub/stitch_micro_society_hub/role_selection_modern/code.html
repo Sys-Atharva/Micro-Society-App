@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Micro-Society | Role Selection</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "on-surface": "#0b1c30",
+                    "on-surface-variant": "#45464d",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "secondary": "#4648d4",
+                    "on-primary-fixed": "#131b2e",
+                    "surface-dim": "#cbdbf5",
+                    "inverse-surface": "#213145",
+                    "on-secondary-container": "#fffbff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "surface-tint": "#565e74",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed": "#e1e0ff",
+                    "on-secondary-fixed": "#07006c",
+                    "tertiary": "#000000",
+                    "secondary-container": "#6063ee",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "primary": "#000000",
+                    "outline": "#76777d",
+                    "primary-fixed-dim": "#bec6e0",
+                    "surface-container": "#e5eeff",
+                    "tertiary-fixed": "#e0e3e5",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#818486",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary-fixed": "#191c1e",
+                    "surface-variant": "#d3e4fe",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "tertiary-container": "#191c1e",
+                    "on-primary-container": "#7c839b",
+                    "on-background": "#0b1c30",
+                    "primary-fixed": "#dae2fd",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "primary-container": "#131b2e",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#f8f9ff",
+                    "outline-variant": "#c6c6cd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-xs": "4px",
+                    "gutter-mobile": "16px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "gutter-desktop": "24px",
+                    "stack-lg": "32px",
+                    "margin-desktop": "40px",
+                    "unit": "4px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "caption": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+            color: #0b1c30;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 238, 255, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(70, 72, 212, 0.15);
+        }
+        .role-selected {
+            border: 2px solid #4648d4;
+            background: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(70, 72, 212, 0.2);
+        }
+        .floating-bg {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(96, 99, 238, 0.08) 0%, rgba(248, 249, 255, 0) 70%);
+            z-index: -1;
+            filter: blur(40px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- Subtle Background Elements -->
+<div aria-hidden="true" class="floating-bg top-[-10%] left-[-10%]"></div>
+<div aria-hidden="true" class="floating-bg bottom-[-10%] right-[-10%]"></div>
+<!-- Top Navigation Anchor (Suppressed in Shell Logic for Transactional but added minimalist logo) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop py-stack-md bg-surface/80 backdrop-blur-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">hub</span>
+<span class="font-headline-md-mobile md:font-headline-md font-bold tracking-tight text-on-surface">Micro-Society</span>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center justify-center px-margin-mobile py-stack-lg mt-16">
+<!-- Hero Section -->
+<div class="text-center mb-stack-lg max-w-2xl">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-stack-sm">Who are you?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Choose your role to get started.</p>
+</div>
+<!-- Role Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter-mobile md:gap-gutter-desktop w-full max-w-4xl">
+<!-- Owner Role Card -->
+<button class="glass-card group flex flex-col p-stack-lg rounded-xl text-left cursor-pointer outline-none ring-offset-2 focus:ring-2 focus:ring-secondary" id="role-owner" onclick="selectRole('owner')">
+<div class="w-16 h-16 rounded-xl bg-secondary-fixed flex items-center justify-center mb-stack-md group-hover:bg-secondary-container transition-colors">
+<span class="material-symbols-outlined text-on-secondary-fixed text-4xl group-hover:text-on-secondary-container transition-colors" data-icon="domain">domain</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-stack-xs">Owner</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg">Manage your properties, handle maintenance requests, and oversee community developments efficiently.</p>
+<div class="mt-auto flex items-center font-label-md text-label-md text-secondary gap-2 group-hover:gap-3 transition-all">
+<span>Select Owner Access</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</button>
+<!-- Tenant Role Card -->
+<button class="glass-card group flex flex-col p-stack-lg rounded-xl text-left cursor-pointer outline-none ring-offset-2 focus:ring-2 focus:ring-secondary" id="role-tenant" onclick="selectRole('tenant')">
+<div class="w-16 h-16 rounded-xl bg-surface-container flex items-center justify-center mb-stack-md group-hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-secondary text-4xl" data-icon="house">house</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface mb-stack-xs">Tenant</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg">Report issues, browse local events, pay rent, and connect with your neighbors in the community.</p>
+<div class="mt-auto flex items-center font-label-md text-label-md text-secondary gap-2 group-hover:gap-3 transition-all">
+<span>Select Tenant Access</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</button>
+</div>
+<!-- Interaction Details / Visual Polish -->
+<div class="mt-stack-lg grid grid-cols-1 md:grid-cols-3 gap-stack-md w-full max-w-4xl opacity-60">
+<div class="flex items-center gap-stack-sm p-stack-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-body-md">verified_user</span>
+<span class="font-caption text-caption text-on-surface-variant">Verified Identities</span>
+</div>
+<div class="flex items-center gap-stack-sm p-stack-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-body-md">lock</span>
+<span class="font-caption text-caption text-on-surface-variant">Secure Data Encryption</span>
+</div>
+<div class="flex items-center gap-stack-sm p-stack-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-body-md">bolt</span>
+<span class="font-caption text-caption text-on-surface-variant">Real-time Coordination</span>
+</div>
+</div>
+<!-- Primary Action Button (Initially Hidden until selection) -->
+<div class="fixed bottom-margin-mobile md:bottom-margin-desktop left-0 w-full flex justify-center pointer-events-none opacity-0 translate-y-4 transition-all duration-300" id="continue-container">
+<button class="pointer-events-auto h-11 px-stack-lg bg-secondary text-on-secondary font-label-md text-label-md rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all">
+                Continue to Dashboard
+            </button>
+</div>
+</main>
+<footer class="mt-auto py-stack-lg px-margin-mobile text-center">
+<p class="font-caption text-caption text-on-surface-variant/50">© 2024 Micro-Society Inc. All rights reserved.</p>
+</footer>
+<script>
+        function selectRole(role) {
+            const ownerCard = document.getElementById('role-owner');
+            const tenantCard = document.getElementById('role-tenant');
+            const continueBtn = document.getElementById('continue-container');
+
+            // Reset states
+            ownerCard.classList.remove('role-selected');
+            tenantCard.classList.remove('role-selected');
+
+            // Apply active state
+            if(role === 'owner') {
+                ownerCard.classList.add('role-selected');
+            } else {
+                tenantCard.classList.add('role-selected');
+            }
+
+            // Show continue button
+            continueBtn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            continueBtn.classList.add('opacity-100', 'translate-y-0');
+
+            // Haptic-like feedback if supported
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(5);
+            }
+        }
+    </script>
+</body></html>

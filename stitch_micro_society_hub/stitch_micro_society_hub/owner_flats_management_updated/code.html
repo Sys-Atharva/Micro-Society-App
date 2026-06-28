@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Management Terminal | Micro-Society</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#76777d",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "secondary-fixed": "#e1e0ff",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "on-primary-fixed": "#131b2e",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "secondary": "#4648d4",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-fixed": "#07006c",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container": "#e5eeff",
+                    "on-background": "#0b1c30",
+                    "secondary-container": "#6063ee",
+                    "tertiary-fixed": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "outline-variant": "#c6c6cd",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "tertiary": "#000000",
+                    "inverse-surface": "#213145",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "tertiary-container": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "surface-container-high": "#dce9ff",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "primary": "#000000",
+                    "surface-variant": "#d3e4fe",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#565e74",
+                    "on-tertiary-container": "#818486",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "stack-xs": "4px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "gutter-desktop": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "20px",
+                    "stack-lg": "32px",
+                    "gutter-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm">
+<div class="flex items-center justify-between px-margin-mobile py-stack-md w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<button class="active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold tracking-tight text-on-surface">Micro-Society</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-secondary-container/10 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full border-2 border-secondary overflow-hidden hidden md:block">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged property manager in a well-lit modern office. The lighting is soft and natural, emphasizing a high-trust and secure atmosphere. The person has a friendly but authoritative expression. The background features blurred architectural elements and a clean, light-mode palette of whites and soft indigos, matching a corporate minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnUigkv7-t_Mxr_b22c7XxUqlib3e3oMh3yyYAfY5IR7oVsc1NObLjrwx1oLJkGNj_IxM0Q3Cvv7hSqQMQk4GflSmuxBK6r3EZfuoWQr0sC1gRZjxq7XvkRNTOfW1do2diME0NkbVsQOVaIbqhcnvykCAgjMoHVt7UfjYIILuuFO3uc9T3fJmCSn1NEBw2bwPXft3XxT-U7kSyCdjAvXz81H5XVpwlOoimp1S_oltUvhqKnrKDY3bQlPqZRPXvxtodigWTikY3JsA"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 px-margin-mobile max-w-7xl mx-auto space-y-stack-lg">
+<!-- Dashboard Header & Stats -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter-mobile md:gap-gutter-desktop">
+<div class="md:col-span-3 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Unit Management</h2>
+<p class="text-on-surface-variant font-body-md">Oversee your local society inventory and tenant relations.</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container rounded-xl p-1 w-fit">
+<button class="px-6 py-2 rounded-lg font-label-md transition-all bg-secondary text-on-secondary shadow-sm" id="tab-all" onclick="switchTab('all')">All</button>
+<button class="px-6 py-2 rounded-lg font-label-md transition-all text-on-surface-variant hover:bg-surface-container-high" id="tab-occupied" onclick="switchTab('occupied')">Occupied</button>
+<button class="px-6 py-2 rounded-lg font-label-md transition-all text-on-surface-variant hover:bg-surface-container-high" id="tab-vacant" onclick="switchTab('vacant')">Vacant</button>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="glass-card p-6 rounded-xl space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-label-md">Total Revenue</span>
+<span class="material-symbols-outlined text-secondary">payments</span>
+</div>
+<p class="font-headline-md text-primary">$42,850.00</p>
+<span class="text-caption text-secondary font-medium">+12.5% from last month</span>
+</div>
+<div class="glass-card p-6 rounded-xl space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-label-md">Occupancy Rate</span>
+<span class="material-symbols-outlined text-secondary">analytics</span>
+</div>
+<p class="font-headline-md text-primary">94.2%</p>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full mt-2">
+<div class="bg-secondary h-full rounded-full" style="width: 94.2%"></div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-label-md">Active Issues</span>
+<span class="material-symbols-outlined text-error">report_problem</span>
+</div>
+<p class="font-headline-md text-primary">3</p>
+<span class="text-caption text-on-surface-variant">2 critical, 1 minor</span>
+</div>
+</section>
+<!-- Flats Management Terminal -->
+<section class="space-y-stack-md">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-md px-4">
+<span class="w-16">Unit</span>
+<span class="w-48 hidden sm:inline">Tenant</span>
+<span class="w-32">Status</span>
+<span class="flex-grow">Rent</span>
+</div>
+<div class="w-10"></div>
+</div>
+<div class="space-y-stack-sm" id="units-container">
+<!-- Unit Card 1 -->
+<div class="unit-item occupied flex items-center justify-between glass-card p-4 rounded-xl hover:shadow-md transition-all cursor-pointer group">
+<div class="flex items-center gap-4 text-body-md px-2">
+<span class="w-16 font-bold text-primary">101</span>
+<div class="w-48 hidden sm:flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed text-caption font-bold">JD</div>
+<span class="text-on-surface">Jane Doe</span>
+</div>
+<span class="w-32 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-label-md text-secondary">Occupied</span>
+</span>
+<span class="flex-grow font-semibold text-primary">$2,450</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Unit Card 2 -->
+<div class="unit-item vacant flex items-center justify-between glass-card p-4 rounded-xl hover:shadow-md transition-all cursor-pointer group border-l-4 border-l-outline-variant">
+<div class="flex items-center gap-4 text-body-md px-2">
+<span class="w-16 font-bold text-primary">102</span>
+<div class="w-48 hidden sm:flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-outline text-caption font-bold">—</div>
+<span class="text-on-surface-variant italic">Unassigned</span>
+</div>
+<span class="w-32 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span class="text-label-md text-on-surface-variant">Vacant</span>
+</span>
+<span class="flex-grow font-semibold text-primary">$2,100</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Unit Card 3 -->
+<div class="unit-item occupied flex items-center justify-between glass-card p-4 rounded-xl hover:shadow-md transition-all cursor-pointer group">
+<div class="flex items-center gap-4 text-body-md px-2">
+<span class="w-16 font-bold text-primary">201</span>
+<div class="w-48 hidden sm:flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed text-caption font-bold">MB</div>
+<span class="text-on-surface">Mark Brown</span>
+</div>
+<span class="w-32 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-label-md text-secondary">Occupied</span>
+</span>
+<span class="flex-grow font-semibold text-primary">$2,800</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Unit Card 4 -->
+<div class="unit-item occupied flex items-center justify-between glass-card p-4 rounded-xl hover:shadow-md transition-all cursor-pointer group">
+<div class="flex items-center gap-4 text-body-md px-2">
+<span class="w-16 font-bold text-primary">202</span>
+<div class="w-48 hidden sm:flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed text-caption font-bold">AL</div>
+<span class="text-on-surface">Alice Lane</span>
+</div>
+<span class="w-32 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-label-md text-secondary">Occupied</span>
+</span>
+<span class="flex-grow font-semibold text-primary">$2,800</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Unit Card 5 -->
+<div class="unit-item vacant flex items-center justify-between glass-card p-4 rounded-xl hover:shadow-md transition-all cursor-pointer group border-l-4 border-l-outline-variant">
+<div class="flex items-center gap-4 text-body-md px-2">
+<span class="w-16 font-bold text-primary">301</span>
+<div class="w-48 hidden sm:flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-outline text-caption font-bold">—</div>
+<span class="text-on-surface-variant italic">Unassigned</span>
+</div>
+<span class="w-32 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span class="text-label-md text-on-surface-variant">Vacant</span>
+</span>
+<span class="flex-grow font-semibold text-primary">$3,200</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 md:bottom-12 md:right-12 w-14 h-14 bg-secondary text-on-secondary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+<span class="sr-only">Add Flat</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.05)] rounded-t-xl px-4 py-3 pb-safe flex justify-around items-center">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 hover:bg-surface-container-high transition-all active:scale-90">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1.5 transition-all active:scale-90">
+<span class="material-symbols-outlined">domain</span>
+<span class="font-label-md text-label-md">Flats</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 hover:bg-surface-container-high transition-all active:scale-90">
+<span class="material-symbols-outlined">report_problem</span>
+<span class="font-label-md text-label-md">Issues</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 hover:bg-surface-container-high transition-all active:scale-90">
+<span class="material-symbols-outlined">event</span>
+<span class="font-label-md text-label-md">Events</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 hover:bg-surface-container-high transition-all active:scale-90">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</button>
+</nav>
+<script>
+        function switchTab(filter) {
+            const tabs = ['all', 'occupied', 'vacant'];
+            const container = document.getElementById('units-container');
+            const items = container.getElementsByClassName('unit-item');
+
+            // Update UI
+            tabs.forEach(tab => {
+                const btn = document.getElementById(`tab-${tab}`);
+                if (tab === filter) {
+                    btn.classList.add('bg-secondary', 'text-on-secondary', 'shadow-sm');
+                    btn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-high');
+                } else {
+                    btn.classList.remove('bg-secondary', 'text-on-secondary', 'shadow-sm');
+                    btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container-high');
+                }
+            });
+
+            // Filter items
+            Array.from(items).forEach(item => {
+                if (filter === 'all' || item.classList.contains(filter)) {
+                    item.style.display = 'flex';
+                    item.classList.add('animate-fade-in');
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Simple fade-in animation logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('.unit-item');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.4s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 50);
+            });
+        });
+    </script>
+</body></html>

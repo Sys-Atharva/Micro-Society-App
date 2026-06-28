@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Owner Profile - Micro-Society</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#76777d",
+                        "on-primary-container": "#7c839b",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#2f2ebe",
+                        "secondary-fixed": "#e1e0ff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-low": "#eff4ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-primary-fixed": "#131b2e",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#dae2fd",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "secondary": "#4648d4",
+                        "on-surface-variant": "#45464d",
+                        "on-secondary-fixed": "#07006c",
+                        "on-secondary-container": "#fffbff",
+                        "surface-container": "#e5eeff",
+                        "on-background": "#0b1c30",
+                        "secondary-container": "#6063ee",
+                        "tertiary-fixed": "#e0e3e5",
+                        "primary-container": "#131b2e",
+                        "outline-variant": "#c6c6cd",
+                        "surface": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "tertiary": "#000000",
+                        "inverse-surface": "#213145",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "secondary-fixed-dim": "#c0c1ff",
+                        "tertiary-container": "#191c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#bec6e0",
+                        "surface-container-high": "#dce9ff",
+                        "background": "#f8f9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-surface": "#0b1c30",
+                        "primary": "#000000",
+                        "surface-variant": "#d3e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "surface-tint": "#565e74",
+                        "on-tertiary-container": "#818486",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-xs": "4px",
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "gutter-desktop": "24px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "20px",
+                        "stack-lg": "32px",
+                        "gutter-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "caption": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .custom-shadow { box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05); }
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 dark:bg-surface-container-high/80 backdrop-blur-md shadow-sm dark:shadow-none flex items-center justify-between px-margin-mobile py-stack-md w-full">
+<div class="flex items-center gap-stack-sm">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed active:scale-95 transition-transform duration-200" data-icon="menu">menu</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold tracking-tight text-on-surface dark:text-on-surface-variant">Micro-Society</h1>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed active:scale-95 transition-transform duration-200" data-icon="notifications">notifications</button>
+</header>
+<main class="pt-24 px-margin-mobile max-w-2xl mx-auto space-y-stack-lg fade-in">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center text-center space-y-stack-md">
+<div class="relative">
+<div class="w-24 h-24 rounded-full border-4 border-surface-container-highest shadow-xl overflow-hidden bg-secondary-container flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged woman with a friendly, confident expression. She is wearing a navy blue blazer over a white shirt, set against a blurred, high-end modern office interior with soft natural lighting and minimalist glass partitions. The overall aesthetic is clean, sophisticated, and trustworthy, perfectly aligning with the Micro-Society brand identity of modern professionalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlkc24Kc_8gHDXTmW2jB9opiOlM9Hb8WxE1E5PUP75aDpdtqbFpakPXx85ADUV7t47xPtFjZuu52ovByEGVf7cE6fZCHvkGBRy3n0R12TvFCrYirYy9uL9oym_69w5V0_EydIXMMw0ADl43dJxEJUcNM0hxhjWny0k05OICdxQTUcYW0T3JrBAsb4h9WI8ydfPX4NrG4APgaEReicUd5fMUYSC6VeF5BBMktGxDzL129D6NWtOE8KHuKke7pkF1uTRVlf-PELbX9E"/>
+</div>
+<div class="absolute bottom-0 right-0 bg-secondary text-white p-1.5 rounded-full border-2 border-white shadow-md flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background font-bold">Alexandra Sterling</h2>
+<p class="font-label-md text-label-md text-secondary font-semibold uppercase tracking-wider">Property Manager</p>
+</div>
+</section>
+<!-- Stats Grid (Asymmetric Bento Style) -->
+<div class="grid grid-cols-2 gap-stack-md">
+<!-- Units Count -->
+<div class="glass-card rounded-xl p-stack-md flex flex-col justify-between custom-shadow">
+<span class="material-symbols-outlined text-secondary text-headline-md" data-icon="domain">domain</span>
+<div class="mt-stack-sm">
+<div class="font-display-lg text-4xl text-on-surface">24</div>
+<div class="font-label-md text-on-surface-variant">Managed Units</div>
+</div>
+</div>
+<!-- Issues Count -->
+<div class="glass-card rounded-xl p-stack-md flex flex-col justify-between custom-shadow">
+<span class="material-symbols-outlined text-error text-headline-md" data-icon="report_problem">report_problem</span>
+<div class="mt-stack-sm">
+<div class="font-display-lg text-4xl text-on-surface">3</div>
+<div class="font-label-md text-on-surface-variant">Active Issues</div>
+</div>
+</div>
+</div>
+<!-- Unique Building Code Component -->
+<section class="bg-secondary-container/10 border border-secondary-container/20 rounded-2xl p-stack-lg relative overflow-hidden">
+
+<div class="relative z-10 flex flex-col items-center space-y-stack-sm text-center">
+<span class="font-label-md text-secondary uppercase tracking-[0.2em] font-bold">Your Unique Property Key</span>
+<div class="flex items-center gap-stack-sm bg-white/60 backdrop-blur-sm px-6 py-3 rounded-full border border-white shadow-inner">
+<span class="font-display-lg text-3xl tracking-widest text-on-background select-all" id="buildingCode">MS-8821</span>
+<button class="p-2 hover:bg-secondary-container/20 rounded-full transition-colors active:scale-90" onclick="copyCode()">
+<span class="material-symbols-outlined text-secondary" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+<p class="font-caption text-on-surface-variant max-w-[240px]">Tenants use this code to link their account to your property.</p>
+</div>
+</section>
+<!-- List Menu -->
+<section class="space-y-stack-sm">
+<h3 class="font-label-md text-outline uppercase tracking-wider px-margin-mobile">Account Actions</h3>
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl overflow-hidden custom-shadow">
+<!-- Edit Profile -->
+<button class="w-full flex items-center justify-between px-6 py-4 hover:bg-secondary-container/5 transition-colors group active:bg-secondary-container/10">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors" data-icon="person_edit">person_edit</span>
+<span class="font-body-md text-on-surface">Edit Profile</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+<div class="h-[1px] bg-outline-variant/20 mx-6"></div>
+<!-- Settings -->
+<button class="w-full flex items-center justify-between px-6 py-4 hover:bg-secondary-container/5 transition-colors group active:bg-secondary-container/10">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors" data-icon="settings">settings</span>
+<span class="font-body-md text-on-surface">Settings</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+<div class="h-[1px] bg-outline-variant/20 mx-6"></div>
+<!-- Privacy -->
+<button class="w-full flex items-center justify-between px-6 py-4 hover:bg-secondary-container/5 transition-colors group active:bg-secondary-container/10">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors" data-icon="shield">shield</span>
+<span class="font-body-md text-on-surface">Privacy &amp; Security</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+<div class="h-[1px] bg-outline-variant/20 mx-6"></div>
+<!-- Log Out -->
+<button class="w-full flex items-center justify-between px-6 py-4 hover:bg-error-container/20 transition-colors group active:bg-error-container/40">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-error" data-icon="logout">logout</span>
+<span class="font-body-md text-error font-medium">Log Out</span>
+</div>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface/90 dark:bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-2px_10px_rgba(0,0,0,0.05)] rounded-t-xl z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1.5 hover:bg-surface-container-high transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1.5 hover:bg-surface-container-high transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="font-label-md text-label-md">Flats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1.5 hover:bg-surface-container-high transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+<span class="font-label-md text-label-md">Issues</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1.5 hover:bg-surface-container-high transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span class="font-label-md text-label-md">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-4 py-1.5 active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        function copyCode() {
+            const code = document.getElementById('buildingCode').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.currentTarget;
+                const icon = btn.querySelector('.material-symbols-outlined');
+                const originalIcon = icon.innerText;
+                icon.innerText = 'check';
+                icon.classList.add('text-green-500');
+                
+                setTimeout(() => {
+                    icon.innerText = originalIcon;
+                    icon.classList.remove('text-green-500');
+                }, 2000);
+            });
+        }
+
+        // Simple parallax or micro-interactions could be added here
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>
