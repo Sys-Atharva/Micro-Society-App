@@ -11,6 +11,8 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final int? maxLines;
+  final String? helperText;
+  final TextCapitalization textCapitalization;
 
   const CustomTextField({
     super.key,
@@ -23,6 +25,8 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.maxLines = 1,
+    this.helperText,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   @override
@@ -33,15 +37,21 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       maxLines: maxLines,
+      textCapitalization: textCapitalization,
       style: GoogleFonts.inter(
-        fontSize: 14,
-        color: const Color(0xFF1E1E2C),
+        fontSize: 16,
+        color: const Color(0xFF0B1C30),
       ),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
+        helperText: helperText,
+        helperStyle: GoogleFonts.inter(
+          fontSize: 12,
+          color: const Color(0xFF7C839B),
+        ),
       ),
     );
   }

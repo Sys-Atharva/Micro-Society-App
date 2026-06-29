@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/widgets/reusable/loading_button.dart';
@@ -11,9 +12,39 @@ class RoleSelectionScreen extends StatefulWidget {
   State<RoleSelectionScreen> createState() => _RoleSelectionScreenState();
 }
 
-class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
+class _RoleSelectionScreenState extends State<RoleSelectionScreen>
+    with SingleTickerProviderStateMixin {
   String? _selectedRole;
   String? _errorMessage;
+  late AnimationController _buttonController;
+  late Animation<double> _buttonAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _buttonController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _buttonAnimation = CurvedAnimation(
+      parent: _buttonController,
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _buttonController.dispose();
+    super.dispose();
+  }
+
+  void _selectRole(String role) {
+    HapticFeedback.mediumImpact();
+    setState(() => _selectedRole = role);
+    if (_selectedRole != null) {
+      _buttonController.forward(from: 0);
+    }
+  }
 
   Future<void> _completeRegistration() async {
     if (_selectedRole == null) {
@@ -39,85 +70,205 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
 
     if (error != null) {
       setState(() => _errorMessage = error);
+    } else {
+      if (_selectedRole == 'owner') {
+        Navigator.pushReplacementNamed(
+          context,
+          '/owner/bank-details',
+          arguments: {'onboarding': true},
+        );
+      } else {
+        Navigator.pushReplacementNamed(context, '/');
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Choose Role'),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'How will you use Micro Society?',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.inter(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF1E1E2C),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Select your role to personalize your experience',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.inter(
-                  fontSize: 16,
-                  color: const Color(0xFF6B7280),
-                ),
-              ),
-              const SizedBox(height: 40),
-              if (_errorMessage != null) ...[
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFDC2626).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          color: Color(0xFFF8F9FF),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 200,
+              left: -200,
+              child: Container(
+                width: 500,
+                height: 500,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      const Color(0xFF4648D4).withAlpha(20),
+                      const Color(0xFF4648D4).withAlpha(0),
+                    ],
                   ),
-                  child: Text(
-                    _errorMessage!,
-                    style: GoogleFonts.inter(
-                      color: const Color(0xFFDC2626),
-                      fontSize: 14,
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 16),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF4648D4).withAlpha(25),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.hub_rounded,
+                            size: 20,
+                            color: Color(0xFF4648D4),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Micro-Society',
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF0B1C30),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-              ],
-              _RoleCard(
-                icon: Icons.business_rounded,
-                title: 'Owner',
-                description: 'Manage your building, flats, and residents',
-                isSelected: _selectedRole == 'owner',
-                onTap: () => setState(() => _selectedRole = 'owner'),
+                  const SizedBox(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Who are you?',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF0B1C30),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Choose your role to get started.',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            color: const Color(0xFF45464D),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  if (_errorMessage != null) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFBA1A1A).withAlpha(15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          _errorMessage!,
+                          style: GoogleFonts.inter(
+                            color: const Color(0xFFBA1A1A),
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        children: [
+                          _RoleCard(
+                            icon: Icons.domain_rounded,
+                            title: 'Owner',
+                            description:
+                                'Manage your properties, handle maintenance requests, and oversee community developments efficiently',
+                            iconBgColor: const Color(0xFFE1E0FF),
+                            isSelected: _selectedRole == 'owner',
+                            onTap: () => _selectRole('owner'),
+                          ),
+                          const SizedBox(height: 16),
+                          _RoleCard(
+                            icon: Icons.house_rounded,
+                            title: 'Tenant',
+                            description:
+                                'Report issues, browse local events, pay rent, and connect with your neighbors',
+                            iconBgColor: const Color(0xFFE5EEFF),
+                            isSelected: _selectedRole == 'tenant',
+                            onTap: () => _selectRole('tenant'),
+                          ),
+                          const SizedBox(height: 24),
+                          const Row(
+                            children: [
+                              _TrustBadge(
+                                icon: Icons.verified_user_rounded,
+                                label: 'Verified\nIdentities',
+                              ),
+                              SizedBox(width: 12),
+                              _TrustBadge(
+                                icon: Icons.lock_rounded,
+                                label: 'Secure Data\nEncryption',
+                              ),
+                              SizedBox(width: 12),
+                              _TrustBadge(
+                                icon: Icons.bolt_rounded,
+                                label: 'Real-time\nCoordination',
+                              ),
+                            ],
+                          ),
+                          if (_selectedRole != null) ...[
+                            const SizedBox(height: 16),
+                            FadeTransition(
+                              opacity: _buttonAnimation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0, 0.2),
+                                  end: Offset.zero,
+                                ).animate(_buttonAnimation),
+                                child: Consumer<AuthProvider>(
+                                  builder: (context, auth, _) {
+                                    return LoadingButton(
+                                      label: 'Continue to Dashboard',
+                                      isLoading:
+                                          auth.status == AuthStatus.loading,
+                                      onPressed: _completeRegistration,
+                                      trailingIcon: const Icon(
+                                        Icons.arrow_forward_rounded,
+                                        size: 18,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                          const SizedBox(height: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-              _RoleCard(
-                icon: Icons.person_rounded,
-                title: 'Tenant',
-                description: 'Connect with your building community',
-                isSelected: _selectedRole == 'tenant',
-                onTap: () => setState(() => _selectedRole = 'tenant'),
-              ),
-              const SizedBox(height: 32),
-              Consumer<AuthProvider>(
-                builder: (context, auth, _) {
-                  return LoadingButton(
-                    label: 'Complete Registration',
-                    isLoading: auth.status == AuthStatus.loading,
-                    onPressed: _completeRegistration,
-                  );
-                },
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -128,6 +279,7 @@ class _RoleCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
+  final Color iconBgColor;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -135,6 +287,7 @@ class _RoleCard extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.description,
+    required this.iconBgColor,
     required this.isSelected,
     required this.onTap,
   });
@@ -147,53 +300,121 @@ class _RoleCard extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF4F46E5).withValues(alpha: 0.05) : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: isSelected ? Colors.white : Colors.white.withAlpha(178),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? const Color(0xFF4F46E5) : const Color(0xFFE5E7EB),
+            color:
+                isSelected ? const Color(0xFF4648D4) : const Color(0xFFE5EEFF),
             width: isSelected ? 2 : 1,
           ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFF4648D4).withAlpha(30),
+                    blurRadius: 20,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : [],
         ),
-        child: Row(
+        child: Column(
           children: [
-            Icon(
-              icon,
-              size: 40,
-              color: isSelected
-                  ? const Color(0xFF4F46E5)
-                  : const Color(0xFF6B7280),
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                color: iconBgColor,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                icon,
+                size: 32,
+                color: const Color(0xFF4648D4),
+              ),
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(height: 16),
+            Text(
+              title,
+              style: GoogleFonts.inter(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF0B1C30),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              description,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: const Color(0xFF45464D),
+              ),
+            ),
+            if (isSelected) ...[
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    title,
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected
-                          ? const Color(0xFF4F46E5)
-                          : const Color(0xFF1E1E2C),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
+                    'Select $title Access',
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: const Color(0xFF6B7280),
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF4648D4),
                     ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    size: 16,
+                    color: Color(0xFF4648D4),
                   ),
                 ],
               ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TrustBadge extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _TrustBadge({
+    required this.icon,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE1E0FF).withAlpha(50),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 20,
+              color: const Color(0xFF4648D4),
             ),
-            if (isSelected)
-              Icon(
-                Icons.check_circle_rounded,
-                color: Theme.of(context).colorScheme.primary,
+            const SizedBox(height: 4),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF4648D4),
+                height: 1.3,
               ),
+            ),
           ],
         ),
       ),

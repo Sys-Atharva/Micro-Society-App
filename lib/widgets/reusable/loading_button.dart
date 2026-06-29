@@ -9,6 +9,7 @@ class LoadingButton extends StatelessWidget {
   final Color? textColor;
   final double? width;
   final double? height;
+  final Widget? trailingIcon;
 
   const LoadingButton({
     super.key,
@@ -19,6 +20,7 @@ class LoadingButton extends StatelessWidget {
     this.textColor,
     this.width,
     this.height,
+    this.trailingIcon,
   });
 
   @override
@@ -42,12 +44,21 @@ class LoadingButton extends StatelessWidget {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : Text(
-                label,
-                style: GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    label,
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (trailingIcon != null) ...[
+                    const SizedBox(width: 8),
+                    trailingIcon!,
+                  ],
+                ],
               ),
       ),
     );
