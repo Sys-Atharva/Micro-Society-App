@@ -78,7 +78,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
           arguments: {'onboarding': true},
         );
       } else {
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/tenant/join');
       }
     }
   }

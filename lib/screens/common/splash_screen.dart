@@ -47,7 +47,9 @@ class _SplashScreenState extends State<SplashScreen>
       if (userModel.role == 'owner') {
         Navigator.pushReplacementNamed(context, '/owner/dashboard');
       } else if (userModel.role == 'tenant') {
-        if (!userModel.approved || userModel.buildingCode == null) {
+        if (userModel.buildingCode == null) {
+          Navigator.pushReplacementNamed(context, '/tenant/join');
+        } else if (!userModel.approved) {
           Navigator.pushReplacementNamed(context, '/tenant/waiting');
         } else {
           Navigator.pushReplacementNamed(context, '/tenant/dashboard');
