@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:micro_society_app/config/theme.dart';
+import 'package:micro_society_app/models/event_model.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/event_provider.dart';
 import 'package:micro_society_app/providers/flat_provider.dart';
@@ -210,7 +211,7 @@ class _UpcomingEventsList extends StatelessWidget {
           return _buildShimmer();
         }
 
-        final events = eventProvider.events.take(3).toList();
+        final events = eventProvider.upcomingEvents.take(3).toList();
 
         if (events.isEmpty) {
           return _buildEmptyState(
@@ -237,12 +238,12 @@ class _UpcomingEventsList extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF059669).withAlpha(20),
+                      color: AppTheme.secondaryColor.withAlpha(20),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
                       Icons.event_rounded,
-                      color: Color(0xFF059669),
+                      color: AppTheme.secondaryColor,
                       size: 20,
                     ),
                   ),
@@ -261,14 +262,14 @@ class _UpcomingEventsList extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        if (event.eventDate != null)
-                          Text(
-                            '${event.eventDate!.day}/${event.eventDate!.month}/${event.eventDate!.year}',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: AppTheme.onPrimaryContainerColor,
-                            ),
+                        const SizedBox(height: 2),
+                        Text(
+                          _formatRelativeDate(event),
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: AppTheme.onPrimaryContainerColor,
                           ),
+                        ),
                       ],
                     ),
                   ),
@@ -279,6 +280,39 @@ class _UpcomingEventsList extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _formatRelativeDate(EventModel event) {
+    if (event.eventDate == null) return 'Date not set';
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final eventDay = DateTime(
+        event.eventDate!.year, event.eventDate!.month, event.eventDate!.day);
+    final diff = eventDay.difference(today).inDays;
+
+    String dateLabel;
+    if (diff == 0) {
+      dateLabel = 'Today';
+    } else if (diff == 1) {
+      dateLabel = 'Tomorrow';
+    } else if (diff <= 7) {
+      dateLabel = 'In $diff days';
+    } else {
+      dateLabel =
+          '${event.eventDate!.day}/${event.eventDate!.month}/${event.eventDate!.year}';
+    }
+
+    if (event.eventTime.isNotEmpty) {
+      final parts = event.eventTime.split(':');
+      final hour = int.tryParse(parts[0]) ?? 0;
+      final minute = int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
+      final h = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+      final ampm = hour >= 12 ? 'PM' : 'AM';
+      final m = minute.toString().padLeft(2, '0');
+      return '$dateLabel at $h:$m $ampm';
+    }
+
+    return dateLabel;
   }
 }
 

@@ -10,7 +10,7 @@ import 'package:micro_society_app/screens/auth/register_screen.dart';
 import 'package:micro_society_app/screens/auth/role_selection_screen.dart';
 import 'package:micro_society_app/screens/common/splash_screen.dart';
 import 'package:micro_society_app/screens/owner/bank_details_screen.dart';
-import 'package:micro_society_app/screens/owner/events_screen.dart';
+import 'package:micro_society_app/screens/owner/event_detail_screen.dart';
 import 'package:micro_society_app/screens/owner/issues_screen.dart';
 import 'package:micro_society_app/screens/owner/manage_flats_screen.dart';
 import 'package:micro_society_app/screens/owner/owner_dashboard.dart';
@@ -48,9 +48,11 @@ class MicroSocietyApp extends StatelessWidget {
           '/owner/dashboard': (context) => const OwnerDashboard(),
           '/owner/flats': (context) => const ManageFlatsScreen(),
           '/owner/issues': (context) => const OwnerIssuesScreen(),
-          '/owner/events': (context) => const EventsScreen(),
           '/owner/bank-details': (context) => const BankDetailsScreen(),
           '/owner/profile': (context) => const OwnerProfileScreen(),
+          '/owner/event-detail': (context) => EventDetailScreen(
+                eventId: ModalRoute.of(context)!.settings.arguments as String,
+              ),
           '/tenant/dashboard': (context) => const TenantDashboard(),
           '/tenant/waiting': (context) => const WaitingRoomScreen(),
           '/tenant/join': (context) => const JoinBuildingScreen(),

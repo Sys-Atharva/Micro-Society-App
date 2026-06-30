@@ -4,6 +4,7 @@ import 'package:micro_society_app/config/theme.dart';
 import 'package:micro_society_app/models/event_model.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/event_provider.dart';
+import 'package:micro_society_app/widgets/reusable/status_badge.dart';
 import 'package:provider/provider.dart';
 
 class EventsTab extends StatefulWidget {
@@ -16,19 +17,26 @@ class EventsTab extends StatefulWidget {
 class _EventsTabState extends State<EventsTab> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _locationController = TextEditingController();
   DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _locationController.dispose();
     super.dispose();
   }
 
   void _showAddEventDialog() {
     _titleController.clear();
     _descriptionController.clear();
-    setState(() => _selectedDate = null);
+    _locationController.clear();
+    setState(() {
+      _selectedDate = null;
+      _selectedTime = null;
+    });
 
     showDialog(
       context: context,
@@ -38,47 +46,87 @@ class _EventsTabState extends State<EventsTab> {
             'Add Event',
             style: GoogleFonts.inter(fontWeight: FontWeight.w600),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Event Title',
-                  hintText: 'Enter event title',
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(
+                    labelText: 'Event Title',
+                    hintText: 'Enter event title',
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  hintText: 'Enter event description',
+                const SizedBox(height: 12),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                    hintText: 'Enter event description',
+                  ),
+                  maxLines: 3,
                 ),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 12),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(
-                  _selectedDate != null
-                      ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
-                      : 'Select Date',
+                const SizedBox(height: 12),
+                TextField(
+                  controller: _locationController,
+                  decoration: const InputDecoration(
+                    labelText: 'Location (optional)',
+                    hintText: 'e.g., Community Hall',
+                  ),
                 ),
-                trailing: const Icon(Icons.calendar_today_rounded),
-                onTap: () async {
-                  final date = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                  );
-                  if (date != null) {
-                    setDialogState(() => _selectedDate = date);
-                  }
-                },
-              ),
-            ],
+                const SizedBox(height: 12),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    _selectedDate != null
+                        ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
+                        : 'Select Date',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: _selectedDate != null
+                          ? AppTheme.onSurfaceColor
+                          : AppTheme.outlineColor,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.calendar_today_rounded),
+                  onTap: () async {
+                    final date = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(const Duration(days: 365)),
+                    );
+                    if (date != null) {
+                      setDialogState(() => _selectedDate = date);
+                    }
+                  },
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    _selectedTime != null
+                        ? _selectedTime!.format(context)
+                        : 'Select Time (optional)',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: _selectedTime != null
+                          ? AppTheme.onSurfaceColor
+                          : AppTheme.outlineColor,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.access_time_rounded),
+                  onTap: () async {
+                    final time = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    if (time != null) {
+                      setDialogState(() => _selectedTime = time);
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -96,12 +144,23 @@ class _EventsTabState extends State<EventsTab> {
                 final auth = context.read<AuthProvider>();
                 final eventId =
                     DateTime.now().millisecondsSinceEpoch.toString();
+
+                String eventTimeStr = '';
+                if (_selectedTime != null) {
+                  eventTimeStr =
+                      '${_selectedTime!.hour.toString().padLeft(2, '0')}:${_selectedTime!.minute.toString().padLeft(2, '0')}';
+                }
+
                 final event = EventModel(
                   eventId: eventId,
                   buildingCode: auth.userModel?.buildingCode ?? '',
                   title: _titleController.text.trim(),
                   description: _descriptionController.text.trim(),
+                  location: _locationController.text.trim(),
                   eventDate: _selectedDate,
+                  eventTime: eventTimeStr,
+                  status: 'upcoming',
+                  createdBy: auth.firebaseUser?.uid ?? '',
                 );
                 await eventProvider.addEvent(event);
                 if (context.mounted) Navigator.pop(context);
@@ -110,6 +169,60 @@ class _EventsTabState extends State<EventsTab> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _confirmDelete(EventModel event) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Text(
+          'Delete "${event.title}"?',
+          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+        ),
+        content: Text(
+          'This action cannot be undone. The event will be permanently removed.',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            color: AppTheme.onPrimaryContainerColor,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w500,
+                color: AppTheme.onSurfaceColor,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              final error = await context
+                  .read<EventProvider>()
+                  .deleteEvent(event.eventId);
+              if (error != null && ctx.mounted) {
+                ScaffoldMessenger.of(ctx).showSnackBar(
+                  SnackBar(content: Text(error)),
+                );
+              }
+              if (ctx.mounted) Navigator.pop(ctx);
+            },
+            child: Text(
+              'Delete',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w600,
+                color: AppTheme.errorColor,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -171,7 +284,32 @@ class _EventsTabState extends State<EventsTab> {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              if (eventProvider.events.isEmpty) {
+              if (eventProvider.errorMessage != null) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.error_outline_rounded,
+                        size: 56,
+                        color: AppTheme.errorColor,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        eventProvider.errorMessage!,
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          color: AppTheme.onPrimaryContainerColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              final events = eventProvider.sortedEvents;
+
+              if (events.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -204,36 +342,12 @@ class _EventsTabState extends State<EventsTab> {
 
               return ListView.builder(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                itemCount: eventProvider.events.length,
+                itemCount: events.length,
                 itemBuilder: (context, index) {
-                  final event = eventProvider.events[index];
+                  final event = events[index];
                   return _EventCard(
                     event: event,
-                    onDelete: () async {
-                      final confirmed = await showDialog<bool>(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          title: const Text('Delete Event'),
-                          content: const Text(
-                              'Are you sure you want to delete this event?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(ctx, false),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(ctx, true),
-                              child: const Text('Delete'),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (confirmed == true && context.mounted) {
-                        context
-                            .read<EventProvider>()
-                            .deleteEvent(event.eventId);
-                      }
-                    },
+                    onDelete: () => _confirmDelete(event),
                   );
                 },
               );
@@ -246,87 +360,224 @@ class _EventsTabState extends State<EventsTab> {
 }
 
 class _EventCard extends StatelessWidget {
-  final dynamic event;
+  final EventModel event;
   final VoidCallback onDelete;
 
   const _EventCard({required this.event, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppTheme.outlineVariantColor.withAlpha(60),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: const Color(0xFF059669).withAlpha(20),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.event_rounded,
-              color: Color(0xFF059669),
-              size: 20,
-            ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/owner/event-detail',
+          arguments: event.eventId,
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppTheme.outlineVariantColor.withAlpha(60),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Text(
-                  event.title,
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.onSurfaceColor,
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: _getEventIconColor(event.status).withAlpha(20),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    _getEventIcon(event.status),
+                    color: _getEventIconColor(event.status),
+                    size: 20,
                   ),
                 ),
-                if (event.description.isNotEmpty)
-                  Text(
-                    event.description,
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: AppTheme.onPrimaryContainerColor,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        event.title,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.onSurfaceColor,
+                        ),
+                      ),
+                      if (event.description.isNotEmpty)
+                        Text(
+                          event.description,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: AppTheme.onPrimaryContainerColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                    ],
                   ),
-                const SizedBox(height: 2),
-                Text(
-                  event.eventDate != null
-                      ? '${event.eventDate!.day}/${event.eventDate!.month}/${event.eventDate!.year}'
-                      : 'Date not set',
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    color: AppTheme.outlineColor,
+                ),
+                StatusBadge(status: event.status),
+                const SizedBox(width: 4),
+                PopupMenuButton<String>(
+                icon: const Icon(
+                  Icons.more_vert_rounded,
+                  color: AppTheme.onSurfaceVariantColor,
+                  size: 20,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                onSelected: (value) {
+                  if (value == 'delete') {
+                    onDelete();
+                  } else if (value == 'completed' ||
+                      value == 'cancelled' ||
+                      value == 'upcoming') {
+                    context.read<EventProvider>().updateEvent(
+                        event.eventId, {'status': value});
+                  }
+                },
+                itemBuilder: (context) => [
+                  if (event.status != 'completed')
+                    PopupMenuItem(
+                      value: 'completed',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.check_circle_outline_rounded,
+                              size: 18, color: Color(0xFF059669)),
+                          const SizedBox(width: 10),
+                          Text('Mark Completed',
+                              style: GoogleFonts.inter(fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  if (event.status != 'cancelled')
+                    PopupMenuItem(
+                      value: 'cancelled',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.cancel_outlined,
+                              size: 18, color: Color(0xFFD97706)),
+                          const SizedBox(width: 10),
+                          Text('Mark Cancelled',
+                              style: GoogleFonts.inter(fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  if (event.status != 'upcoming')
+                    PopupMenuItem(
+                      value: 'upcoming',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.event_rounded,
+                              size: 18, color: AppTheme.secondaryColor),
+                          const SizedBox(width: 10),
+                          Text('Mark Upcoming',
+                              style: GoogleFonts.inter(fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  const PopupMenuDivider(),
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete_outline_rounded,
+                            size: 18, color: AppTheme.errorColor),
+                        const SizedBox(width: 10),
+                        Text('Delete',
+                            style: GoogleFonts.inter(
+                                fontSize: 14, color: AppTheme.errorColor)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Icon(Icons.calendar_today_rounded,
+                  size: 12, color: AppTheme.outlineColor),
+              const SizedBox(width: 4),
+              Text(
+                _formatEventDate(context),
+                style: GoogleFonts.inter(
+                  fontSize: 11,
+                  color: AppTheme.outlineColor,
+                ),
+              ),
+              if (event.location.isNotEmpty) ...[
+                const SizedBox(width: 12),
+                const Icon(Icons.location_on_outlined,
+                    size: 12, color: AppTheme.outlineColor),
+                const SizedBox(width: 4),
+                Flexible(
+                  child: Text(
+                    event.location,
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: AppTheme.outlineColor,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
-            ),
-          ),
-          GestureDetector(
-            onTap: onDelete,
-            child: Container(
-              padding: const EdgeInsets.all(6),
-              child: const Icon(
-                Icons.delete_outline_rounded,
-                color: Color(0xFFDC2626),
-                size: 20,
-              ),
-            ),
+            ],
           ),
         ],
       ),
+      ),
     );
+  }
+
+  String _formatEventDate(BuildContext context) {
+    if (event.eventDate == null) return 'Date not set';
+    final dateStr =
+        '${event.eventDate!.day}/${event.eventDate!.month}/${event.eventDate!.year}';
+    if (event.eventTime.isNotEmpty) {
+      final parts = event.eventTime.split(':');
+      final hour = int.tryParse(parts[0]) ?? 0;
+      final minute = int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
+      final time = TimeOfDay(hour: hour, minute: minute);
+      return '$dateStr at ${time.format(context)}';
+    }
+    return dateStr;
+  }
+
+  Color _getEventIconColor(String status) {
+    switch (status) {
+      case 'completed':
+        return const Color(0xFF059669);
+      case 'cancelled':
+        return const Color(0xFFD97706);
+      default:
+        return AppTheme.secondaryColor;
+    }
+  }
+
+  IconData _getEventIcon(String status) {
+    switch (status) {
+      case 'completed':
+        return Icons.check_circle_rounded;
+      case 'cancelled':
+        return Icons.cancel_rounded;
+      default:
+        return Icons.event_rounded;
+    }
   }
 }
