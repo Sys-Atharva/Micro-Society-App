@@ -11,7 +11,6 @@ import 'package:micro_society_app/screens/auth/role_selection_screen.dart';
 import 'package:micro_society_app/screens/common/splash_screen.dart';
 import 'package:micro_society_app/screens/owner/bank_details_screen.dart';
 import 'package:micro_society_app/screens/owner/event_detail_screen.dart';
-import 'package:micro_society_app/screens/owner/issues_screen.dart';
 import 'package:micro_society_app/screens/owner/manage_flats_screen.dart';
 import 'package:micro_society_app/screens/owner/owner_dashboard.dart';
 import 'package:micro_society_app/screens/owner/profile_screen.dart';
@@ -47,7 +46,6 @@ class MicroSocietyApp extends StatelessWidget {
           '/role-selection': (context) => const RoleSelectionScreen(),
           '/owner/dashboard': (context) => const OwnerDashboard(),
           '/owner/flats': (context) => const ManageFlatsScreen(),
-          '/owner/issues': (context) => const OwnerIssuesScreen(),
           '/owner/bank-details': (context) => const BankDetailsScreen(),
           '/owner/profile': (context) => const OwnerProfileScreen(),
           '/owner/event-detail': (context) => EventDetailScreen(

@@ -6,6 +6,7 @@ class IssueModel {
   final String title;
   final String description;
   final String status;
+  final String priority;
   final DateTime? createdAt;
 
   const IssueModel({
@@ -16,8 +17,13 @@ class IssueModel {
     required this.title,
     required this.description,
     required this.status,
+    this.priority = 'medium',
     this.createdAt,
   });
+
+  bool get isOpen => status == 'open';
+  bool get isInProgress => status == 'in_progress';
+  bool get isResolved => status == 'resolved';
 
   factory IssueModel.fromMap(Map<String, dynamic> map, String issueId) {
     return IssueModel(
@@ -28,6 +34,7 @@ class IssueModel {
       title: map['title'] as String? ?? '',
       description: map['description'] as String? ?? '',
       status: map['status'] as String? ?? 'open',
+      priority: map['priority'] as String? ?? 'medium',
       createdAt: (map['createdAt'] as dynamic)?.toDate(),
     );
   }
@@ -40,6 +47,7 @@ class IssueModel {
       'title': title,
       'description': description,
       'status': status,
+      'priority': priority,
       'createdAt': createdAt ?? DateTime.now(),
     };
   }
@@ -52,6 +60,7 @@ class IssueModel {
     String? title,
     String? description,
     String? status,
+    String? priority,
     DateTime? createdAt,
   }) {
     return IssueModel(
@@ -62,6 +71,7 @@ class IssueModel {
       title: title ?? this.title,
       description: description ?? this.description,
       status: status ?? this.status,
+      priority: priority ?? this.priority,
       createdAt: createdAt ?? this.createdAt,
     );
   }

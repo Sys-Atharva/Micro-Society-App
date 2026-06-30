@@ -325,7 +325,7 @@ class _RecentIssuesList extends StatelessWidget {
           return _buildShimmer();
         }
 
-        final issues = issueProvider.issues.take(3).toList();
+        final issues = issueProvider.sortedIssues.take(3).toList();
 
         if (issues.isEmpty) {
           return _buildEmptyState(
@@ -336,18 +336,6 @@ class _RecentIssuesList extends StatelessWidget {
 
         return Column(
           children: issues.map((issue) {
-            Color statusColor;
-            switch (issue.status) {
-              case 'open':
-                statusColor = const Color(0xFFBA1A1A);
-                break;
-              case 'in_progress':
-                statusColor = const Color(0xFFD97706);
-                break;
-              default:
-                statusColor = const Color(0xFF059669);
-            }
-
             return Container(
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(14),
@@ -355,7 +343,10 @@ class _RecentIssuesList extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
                 border: Border(
-                  left: BorderSide(color: statusColor, width: 3),
+                  left: BorderSide(
+                    color: _getPriorityColor(issue.priority),
+                    width: 3,
+                  ),
                 ),
               ),
               child: Row(
@@ -391,7 +382,7 @@ class _RecentIssuesList extends StatelessWidget {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: statusColor.withAlpha(20),
+                      color: _getStatusColor(issue.status).withAlpha(20),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -399,7 +390,7 @@ class _RecentIssuesList extends StatelessWidget {
                       style: GoogleFonts.inter(
                         fontSize: 9,
                         fontWeight: FontWeight.w700,
-                        color: statusColor,
+                        color: _getStatusColor(issue.status),
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -411,6 +402,32 @@ class _RecentIssuesList extends StatelessWidget {
         );
       },
     );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'open':
+        return const Color(0xFFBA1A1A);
+      case 'in_progress':
+        return const Color(0xFFD97706);
+      case 'resolved':
+        return const Color(0xFF059669);
+      default:
+        return AppTheme.outlineColor;
+    }
+  }
+
+  Color _getPriorityColor(String priority) {
+    switch (priority) {
+      case 'high':
+        return const Color(0xFFBA1A1A);
+      case 'medium':
+        return const Color(0xFFD97706);
+      case 'low':
+        return const Color(0xFF059669);
+      default:
+        return AppTheme.outlineColor;
+    }
   }
 }
 
