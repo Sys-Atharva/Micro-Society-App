@@ -36,6 +36,9 @@ class UserModel {
   final String? flatId;
   final BankDetails bankDetails;
   final DateTime? createdAt;
+  final String? phone;
+  final String? societyName;
+  final String? propertyAddress;
 
   const UserModel({
     required this.uid,
@@ -51,6 +54,9 @@ class UserModel {
       ifscCode: '',
     ),
     this.createdAt,
+    this.phone,
+    this.societyName,
+    this.propertyAddress,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map, String uid) {
@@ -66,6 +72,9 @@ class UserModel {
           ? BankDetails.fromMap(map['bankDetails'] as Map<String, dynamic>)
           : const BankDetails(bankName: '', accountNumber: '', ifscCode: ''),
       createdAt: (map['createdAt'] as dynamic)?.toDate(),
+      phone: map['phone'] as String?,
+      societyName: map['societyName'] as String?,
+      propertyAddress: map['propertyAddress'] as String?,
     );
   }
 
@@ -79,6 +88,9 @@ class UserModel {
       'flatId': flatId,
       'bankDetails': bankDetails.toMap(),
       'createdAt': createdAt ?? DateTime.now(),
+      'phone': phone,
+      'societyName': societyName,
+      'propertyAddress': propertyAddress,
     };
   }
 
@@ -92,6 +104,9 @@ class UserModel {
     String? flatId,
     BankDetails? bankDetails,
     DateTime? createdAt,
+    String? phone,
+    String? societyName,
+    String? propertyAddress,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -103,6 +118,9 @@ class UserModel {
       flatId: flatId ?? this.flatId,
       bankDetails: bankDetails ?? this.bankDetails,
       createdAt: createdAt ?? this.createdAt,
+      phone: phone ?? this.phone,
+      societyName: societyName ?? this.societyName,
+      propertyAddress: propertyAddress ?? this.propertyAddress,
     );
   }
 }

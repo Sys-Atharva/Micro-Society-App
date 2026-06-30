@@ -10,10 +10,13 @@ import 'package:micro_society_app/screens/auth/register_screen.dart';
 import 'package:micro_society_app/screens/auth/role_selection_screen.dart';
 import 'package:micro_society_app/screens/common/splash_screen.dart';
 import 'package:micro_society_app/screens/owner/bank_details_screen.dart';
+import 'package:micro_society_app/screens/owner/edit_profile_screen.dart';
 import 'package:micro_society_app/screens/owner/event_detail_screen.dart';
 import 'package:micro_society_app/screens/owner/manage_flats_screen.dart';
 import 'package:micro_society_app/screens/owner/owner_dashboard.dart';
+import 'package:micro_society_app/screens/owner/privacy_screen.dart';
 import 'package:micro_society_app/screens/owner/profile_screen.dart';
+import 'package:micro_society_app/screens/owner/settings_screen.dart';
 import 'package:micro_society_app/screens/tenant/issues_screen.dart';
 import 'package:micro_society_app/screens/tenant/join_building_screen.dart';
 import 'package:micro_society_app/screens/tenant/payments_screen.dart';
@@ -48,6 +51,9 @@ class MicroSocietyApp extends StatelessWidget {
           '/owner/flats': (context) => const ManageFlatsScreen(),
           '/owner/bank-details': (context) => const BankDetailsScreen(),
           '/owner/profile': (context) => const OwnerProfileScreen(),
+          '/owner/edit-profile': (context) => const EditProfileScreen(),
+          '/owner/settings': (context) => const SettingsScreen(),
+          '/owner/privacy': (context) => const PrivacyScreen(),
           '/owner/event-detail': (context) => EventDetailScreen(
                 eventId: ModalRoute.of(context)!.settings.arguments as String,
               ),

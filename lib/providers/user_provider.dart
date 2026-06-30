@@ -48,6 +48,9 @@ class UserProvider extends ChangeNotifier {
       if (_userModel != null) {
         _userModel = _userModel!.copyWith(
           name: data['name'] as String?,
+          phone: data['phone'] as String?,
+          societyName: data['societyName'] as String?,
+          propertyAddress: data['propertyAddress'] as String?,
           bankDetails: data['bankDetails'] != null
               ? BankDetails.fromMap(
                   data['bankDetails'] as Map<String, dynamic>)

@@ -15,6 +15,7 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _controller;
   late Animation<double> _progressAnimation;
   double _progress = 0;
+  bool _hasRouted = false;
 
   @override
   void initState() {
@@ -30,14 +31,9 @@ class _SplashScreenState extends State<SplashScreen>
       setState(() => _progress = _progressAnimation.value);
     });
     _controller.forward();
-    _checkAuth();
   }
 
-  Future<void> _checkAuth() async {
-    await Future.delayed(const Duration(milliseconds: 1500));
-    if (!mounted) return;
-
-    final authProvider = context.read<AuthProvider>();
+  void _route(AuthProvider authProvider) {
     if (authProvider.status == AuthStatus.authenticated) {
       final userModel = authProvider.userModel;
       if (userModel == null) {
@@ -70,6 +66,18 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final authStatus = context.watch<AuthProvider>().status;
+
+    if (!_hasRouted &&
+        authStatus != AuthStatus.uninitialized &&
+        authStatus != AuthStatus.loading) {
+      _hasRouted = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _route(context.read<AuthProvider>());
+      });
+    }
+
     return Scaffold(
       body: Container(
         width: double.infinity,

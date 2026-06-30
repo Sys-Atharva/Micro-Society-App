@@ -16,6 +16,7 @@ class AuthProvider extends ChangeNotifier {
   User? _firebaseUser;
   UserModel? _userModel;
   StreamSubscription<User?>? _authSubscription;
+  Completer<void>? _authCompleter;
 
   AuthStatus get status => _status;
   User? get firebaseUser => _firebaseUser;
@@ -38,6 +39,7 @@ class AuthProvider extends ChangeNotifier {
       _firebaseUser = null;
       _userModel = null;
       notifyListeners();
+      _resolveAuth();
       return;
     }
 
@@ -47,20 +49,41 @@ class AuthProvider extends ChangeNotifier {
 
     await _loadUserModel(user.uid);
 
-    _status = AuthStatus.authenticated;
+    if (_userModel != null) {
+      _status = AuthStatus.authenticated;
+    } else {
+      _status = AuthStatus.unauthenticated;
+    }
     notifyListeners();
+    _resolveAuth();
   }
 
   Future<void> _loadUserModel(String uid) async {
     try {
-      final userData = await _firestoreService.getDocument(
-        collection: 'users',
-        docId: uid,
-      );
+      final userData = await _firestoreService
+          .getDocument(collection: 'users', docId: uid)
+          .timeout(const Duration(seconds: 10));
       if (userData != null) {
         _userModel = UserModel.fromMap(userData, uid);
       }
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Failed to load user model: $e');
+      _userModel = null;
+    }
+  }
+
+  void _resolveAuth() {
+    if (_authCompleter != null && !_authCompleter!.isCompleted) {
+      _authCompleter!.complete();
+    }
+  }
+
+  Future<void> _waitForAuthResolution() {
+    if (_status != AuthStatus.uninitialized && _status != AuthStatus.loading) {
+      return Future.value();
+    }
+    _authCompleter = Completer<void>();
+    return _authCompleter!.future;
   }
 
   Future<String?> login({
@@ -75,6 +98,12 @@ class AuthProvider extends ChangeNotifier {
         email: email,
         password: password,
       );
+
+      await _waitForAuthResolution();
+
+      if (_status != AuthStatus.authenticated) {
+        return 'Login failed. Please try again.';
+      }
 
       return null;
     } on FirebaseAuthException catch (e) {
