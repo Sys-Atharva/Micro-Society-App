@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:micro_society_app/config/theme.dart';
 import 'package:micro_society_app/models/flat_model.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/flat_provider.dart';
@@ -15,6 +16,8 @@ class ManageFlatsScreen extends StatefulWidget {
 
 class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
   final _flatNumberController = TextEditingController();
+  final _wingController = TextEditingController();
+  final _floorController = TextEditingController();
 
   @override
   void initState() {
@@ -29,6 +32,8 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
   @override
   void dispose() {
     _flatNumberController.dispose();
+    _wingController.dispose();
+    _floorController.dispose();
     super.dispose();
   }
 
@@ -50,6 +55,23 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
                 hintText: 'e.g., 101',
               ),
             ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _wingController,
+              decoration: const InputDecoration(
+                labelText: 'Building Wing',
+                hintText: 'e.g., A',
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _floorController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Flat Floor',
+                hintText: 'e.g., 3',
+              ),
+            ),
           ],
         ),
         actions: [
@@ -68,14 +90,66 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
                 flatId: flatId,
                 flatNumber: _flatNumberController.text.trim(),
                 buildingCode: buildingCode,
+                buildingWing: _wingController.text.trim().isEmpty
+                    ? null
+                    : _wingController.text.trim(),
+                flatFloor: _floorController.text.trim().isEmpty
+                    ? null
+                    : _floorController.text.trim(),
                 status: 'vacant',
                 ownerId: auth.firebaseUser?.uid ?? '',
               );
               await flatProvider.addFlat(flat);
               if (context.mounted) Navigator.pop(context);
               _flatNumberController.clear();
+              _wingController.clear();
+              _floorController.clear();
             },
             child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<bool?> _showDeleteConfirmation(FlatModel flat) {
+    return showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Text(
+          'Delete Flat ${flat.flatNumber}?',
+          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+        ),
+        content: Text(
+          'This action cannot be undone. The flat will be permanently removed.',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            color: AppTheme.onPrimaryContainerColor,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w500,
+                color: AppTheme.onSurfaceColor,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              'Delete',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w600,
+                color: AppTheme.errorColor,
+              ),
+            ),
           ),
         ],
       ),
@@ -149,17 +223,17 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.meeting_room_outlined,
                           size: 64,
-                          color: Colors.grey.shade400,
+                          color: AppTheme.outlineVariantColor,
                         ),
                         const SizedBox(height: 16),
                         Text(
                           'No flats found',
                           style: GoogleFonts.inter(
                             fontSize: 18,
-                            color: const Color(0xFF6B7280),
+                            color: AppTheme.onPrimaryContainerColor,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -167,7 +241,7 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
                           'Add your first flat to get started',
                           style: GoogleFonts.inter(
                             fontSize: 14,
-                            color: const Color(0xFF9CA3AF),
+                            color: AppTheme.outlineColor,
                           ),
                         ),
                       ],
@@ -180,37 +254,73 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
                   itemCount: flatProvider.flats.length,
                   itemBuilder: (context, index) {
                     final flat = flatProvider.flats[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        leading: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF4F46E5)
-                                .withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(
-                            Icons.meeting_room_rounded,
-                            color: Color(0xFF4F46E5),
-                          ),
+                    return Dismissible(
+                      key: Key(flat.flatId),
+                      direction: DismissDirection.endToStart,
+                      confirmDismiss: (_) => _showDeleteConfirmation(flat),
+                      onDismissed: (_) async {
+                        final error = await context
+                            .read<FlatProvider>()
+                            .deleteFlat(flat.flatId);
+                        if (error != null && context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error)),
+                          );
+                        }
+                      },
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: BoxDecoration(
+                          color: AppTheme.errorColor,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        title: Text(
-                          'Flat ${flat.flatNumber}',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: const Icon(
+                          Icons.delete_rounded,
+                          color: Colors.white,
+                          size: 24,
                         ),
-                        subtitle: Text(
-                          'Building: ${flat.buildingCode}',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            color: const Color(0xFF6B7280),
+                      ),
+                      child: Card(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          leading: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppTheme.secondaryColor.withAlpha(20),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(
+                              Icons.meeting_room_rounded,
+                              color: AppTheme.secondaryColor,
+                            ),
                           ),
+                          title: Text(
+                            'Flat ${flat.flatNumber}',
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            [
+                              if (flat.buildingWing != null &&
+                                  flat.buildingWing!.isNotEmpty)
+                                'Wing ${flat.buildingWing}',
+                              if (flat.flatFloor != null &&
+                                  flat.flatFloor!.isNotEmpty)
+                                'Floor ${flat.flatFloor}',
+                              'Building: ${flat.buildingCode}',
+                            ].join(' \u2022 '),
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: AppTheme.onPrimaryContainerColor,
+                            ),
+                          ),
+                          trailing: StatusBadge(status: flat.status),
                         ),
-                        trailing: StatusBadge(status: flat.status),
                       ),
                     );
                   },
@@ -244,8 +354,8 @@ class _FilterChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF4F46E5)
-              : const Color(0xFFF3F4F6),
+              ? AppTheme.secondaryColor
+              : AppTheme.surfaceContainerLow,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -253,7 +363,7 @@ class _FilterChip extends StatelessWidget {
           style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.white : const Color(0xFF6B7280),
+            color: isSelected ? Colors.white : AppTheme.onSurfaceVariantColor,
           ),
         ),
       ),
