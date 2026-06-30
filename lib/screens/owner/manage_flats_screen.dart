@@ -15,7 +15,6 @@ class ManageFlatsScreen extends StatefulWidget {
 
 class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
   final _flatNumberController = TextEditingController();
-  final _buildingCodeController = TextEditingController();
 
   @override
   void initState() {
@@ -30,7 +29,6 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
   @override
   void dispose() {
     _flatNumberController.dispose();
-    _buildingCodeController.dispose();
     super.dispose();
   }
 
@@ -52,14 +50,6 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
                 hintText: 'e.g., 101',
               ),
             ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _buildingCodeController,
-              decoration: const InputDecoration(
-                labelText: 'Building Code',
-                hintText: 'e.g., BLDG-A',
-              ),
-            ),
           ],
         ),
         actions: [
@@ -71,19 +61,19 @@ class _ManageFlatsScreenState extends State<ManageFlatsScreen> {
             onPressed: () async {
               final flatProvider = context.read<FlatProvider>();
               final auth = context.read<AuthProvider>();
+              final buildingCode = auth.userModel?.buildingCode ?? '';
               final flatId =
-                  '${_buildingCodeController.text.trim()}_${_flatNumberController.text.trim()}';
+                  '${buildingCode}_${_flatNumberController.text.trim()}';
               final flat = FlatModel(
                 flatId: flatId,
                 flatNumber: _flatNumberController.text.trim(),
-                buildingCode: _buildingCodeController.text.trim(),
+                buildingCode: buildingCode,
                 status: 'vacant',
                 ownerId: auth.firebaseUser?.uid ?? '',
               );
               await flatProvider.addFlat(flat);
               if (context.mounted) Navigator.pop(context);
               _flatNumberController.clear();
-              _buildingCodeController.clear();
             },
             child: const Text('Add'),
           ),

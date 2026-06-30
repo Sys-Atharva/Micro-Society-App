@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:micro_society_app/models/user_model.dart';
 import 'package:micro_society_app/services/auth_service.dart';
 import 'package:micro_society_app/services/firestore_service.dart';
+import 'package:micro_society_app/utils/building_code_generator.dart';
 
 enum AuthStatus { uninitialized, authenticated, unauthenticated, loading }
 
@@ -107,12 +108,18 @@ class AuthProvider extends ChangeNotifier {
         return 'Registration failed';
       }
 
+      String? buildingCode;
+      if (role == 'owner') {
+        buildingCode = await BuildingCodeGenerator.generateUnique();
+      }
+
       final userModel = UserModel(
         uid: user.uid,
         name: name,
         email: email,
         role: role,
         approved: role == 'owner',
+        buildingCode: buildingCode,
       );
 
       await _firestoreService.setDocument(

@@ -14,6 +14,7 @@ import 'package:micro_society_app/screens/owner/events_screen.dart';
 import 'package:micro_society_app/screens/owner/issues_screen.dart';
 import 'package:micro_society_app/screens/owner/manage_flats_screen.dart';
 import 'package:micro_society_app/screens/owner/owner_dashboard.dart';
+import 'package:micro_society_app/screens/owner/profile_screen.dart';
 import 'package:micro_society_app/screens/tenant/issues_screen.dart';
 import 'package:micro_society_app/screens/tenant/join_building_screen.dart';
 import 'package:micro_society_app/screens/tenant/payments_screen.dart';
@@ -49,6 +50,7 @@ class MicroSocietyApp extends StatelessWidget {
           '/owner/issues': (context) => const OwnerIssuesScreen(),
           '/owner/events': (context) => const EventsScreen(),
           '/owner/bank-details': (context) => const BankDetailsScreen(),
+          '/owner/profile': (context) => const OwnerProfileScreen(),
           '/tenant/dashboard': (context) => const TenantDashboard(),
           '/tenant/waiting': (context) => const WaitingRoomScreen(),
           '/tenant/join': (context) => const JoinBuildingScreen(),
