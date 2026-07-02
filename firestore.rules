@@ -6,7 +6,7 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == userId;
       allow update: if request.auth != null && 
         (request.auth.uid == userId || 
-         request.resource.data.diff(resource.data).hasOnly(['approved']));
+         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['approved']));
     }
     match /flats/{flatId} {
       allow read, write: if request.auth != null;

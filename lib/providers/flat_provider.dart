@@ -47,14 +47,22 @@ class FlatProvider extends ChangeNotifier {
           field: 'buildingCode',
           isEqualTo: buildingCode,
         )
-        .listen((data) {
-          _flats = data
-              .map((d) => FlatModel.fromMap(d, d['id'] as String))
-              .toList();
-          _applyFilter();
-          _isLoading = false;
-          notifyListeners();
-        });
+        .listen(
+          (data) {
+            _flats = data
+                .map((d) => FlatModel.fromMap(d, d['id'] as String))
+                .toList();
+            _applyFilter();
+            _isLoading = false;
+            _errorMessage = null;
+            notifyListeners();
+          },
+          onError: (error) {
+            _isLoading = false;
+            _errorMessage = 'Failed to load flats';
+            notifyListeners();
+          },
+        );
   }
 
   void streamFlatsByOwner(String ownerId) {
@@ -68,14 +76,22 @@ class FlatProvider extends ChangeNotifier {
           field: 'ownerId',
           isEqualTo: ownerId,
         )
-        .listen((data) {
-          _flats = data
-              .map((d) => FlatModel.fromMap(d, d['id'] as String))
-              .toList();
-          _applyFilter();
-          _isLoading = false;
-          notifyListeners();
-        });
+        .listen(
+          (data) {
+            _flats = data
+                .map((d) => FlatModel.fromMap(d, d['id'] as String))
+                .toList();
+            _applyFilter();
+            _isLoading = false;
+            _errorMessage = null;
+            notifyListeners();
+          },
+          onError: (error) {
+            _isLoading = false;
+            _errorMessage = 'Failed to load flats';
+            notifyListeners();
+          },
+        );
   }
 
   Future<String?> addFlat(FlatModel flat) async {

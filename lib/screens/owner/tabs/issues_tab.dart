@@ -27,6 +27,19 @@ class _IssuesTabState extends State<IssuesTab> {
   }
 
   void _showAddIssueDialog() {
+    final issueProvider = context.read<IssueProvider>();
+    final auth = context.read<AuthProvider>();
+    final buildingCode = auth.userModel?.buildingCode;
+    final tenantId = auth.firebaseUser?.uid;
+    final flatNumber = auth.userModel?.flatId ?? '';
+
+    if (buildingCode == null || buildingCode.isEmpty || tenantId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User data not ready. Please re-login.')),
+      );
+      return;
+    }
+
     _titleController.clear();
     _descriptionController.clear();
     setState(() => _selectedPriority = 'medium');
@@ -84,25 +97,39 @@ class _IssuesTabState extends State<IssuesTab> {
             ),
             TextButton(
               onPressed: () async {
-                if (_titleController.text.trim().isEmpty) return;
+                if (_titleController.text.trim().isEmpty) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please enter an issue title')),
+                    );
+                  }
+                  return;
+                }
 
-                final issueProvider = context.read<IssueProvider>();
-                final auth = context.read<AuthProvider>();
                 final issueId =
                     DateTime.now().millisecondsSinceEpoch.toString();
 
                 final issue = IssueModel(
                   issueId: issueId,
-                  buildingCode: auth.userModel?.buildingCode ?? '',
-                  flatNumber: auth.userModel?.flatId ?? '',
-                  tenantId: auth.firebaseUser?.uid ?? '',
+                  buildingCode: buildingCode,
+                  flatNumber: flatNumber,
+                  tenantId: tenantId,
                   title: _titleController.text.trim(),
                   description: _descriptionController.text.trim(),
                   status: 'open',
                   priority: _selectedPriority,
+                  createdAt: DateTime.now(),
                 );
-                await issueProvider.addIssue(issue);
-                if (context.mounted) Navigator.pop(context);
+                final error = await issueProvider.addIssue(issue);
+                if (context.mounted) {
+                  if (error != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to report issue: $error')),
+                    );
+                    return;
+                  }
+                  Navigator.pop(context);
+                }
               },
               child: const Text('Report'),
             ),
@@ -113,6 +140,7 @@ class _IssuesTabState extends State<IssuesTab> {
   }
 
   void _confirmDelete(IssueModel issue) {
+    final issueProvider = context.read<IssueProvider>();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -143,9 +171,7 @@ class _IssuesTabState extends State<IssuesTab> {
           ),
           TextButton(
             onPressed: () async {
-              final error = await context
-                  .read<IssueProvider>()
-                  .deleteIssue(issue.issueId);
+              final error = await issueProvider.deleteIssue(issue.issueId);
               if (error != null && ctx.mounted) {
                 ScaffoldMessenger.of(ctx).showSnackBar(
                   SnackBar(content: Text(error)),
@@ -287,9 +313,15 @@ class _IssuesTabState extends State<IssuesTab> {
                   return _IssueCard(
                     issue: issue,
                     onDelete: () => _confirmDelete(issue),
-                    onStatusUpdate: (newStatus) {
-                      context.read<IssueProvider>().updateIssue(
-                          issue.issueId, {'status': newStatus});
+                    onStatusUpdate: (newStatus) async {
+                      final error = await context
+                          .read<IssueProvider>()
+                          .updateIssue(issue.issueId, {'status': newStatus});
+                      if (error != null && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error)),
+                        );
+                      }
                     },
                   );
                 },

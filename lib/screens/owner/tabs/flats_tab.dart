@@ -28,6 +28,18 @@ class _FlatsTabState extends State<FlatsTab> {
   }
 
   void _showAddFlatDialog() {
+    final flatProvider = context.read<FlatProvider>();
+    final auth = context.read<AuthProvider>();
+    final buildingCode = auth.userModel?.buildingCode;
+    final ownerId = auth.firebaseUser?.uid;
+
+    if (buildingCode == null || buildingCode.isEmpty || ownerId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User data not ready. Please re-login.')),
+      );
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -71,9 +83,6 @@ class _FlatsTabState extends State<FlatsTab> {
           ),
           TextButton(
             onPressed: () async {
-              final flatProvider = context.read<FlatProvider>();
-              final auth = context.read<AuthProvider>();
-              final buildingCode = auth.userModel?.buildingCode ?? '';
               final flatId =
                   '${buildingCode}_${_flatNumberController.text.trim()}';
               final flat = FlatModel(
@@ -87,13 +96,21 @@ class _FlatsTabState extends State<FlatsTab> {
                     ? null
                     : _floorController.text.trim(),
                 status: 'vacant',
-                ownerId: auth.firebaseUser?.uid ?? '',
+                ownerId: ownerId,
               );
-              await flatProvider.addFlat(flat);
-              if (context.mounted) Navigator.pop(context);
-              _flatNumberController.clear();
-              _wingController.clear();
-              _floorController.clear();
+              final error = await flatProvider.addFlat(flat);
+              if (context.mounted) {
+                if (error != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to add flat: $error')),
+                  );
+                  return;
+                }
+                Navigator.pop(context);
+                _flatNumberController.clear();
+                _wingController.clear();
+                _floorController.clear();
+              }
             },
             child: const Text('Add'),
           ),
@@ -254,6 +271,29 @@ class _FlatsTabState extends State<FlatsTab> {
             builder: (context, flatProvider, _) {
               if (flatProvider.isLoading) {
                 return const Center(child: CircularProgressIndicator());
+              }
+
+              if (flatProvider.errorMessage != null) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.error_outline_rounded,
+                        size: 56,
+                        color: AppTheme.errorColor,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        flatProvider.errorMessage!,
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          color: AppTheme.onPrimaryContainerColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               }
 
               if (flatProvider.flats.isEmpty) {

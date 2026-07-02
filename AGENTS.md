@@ -7,6 +7,7 @@
 - `flutter test` — runs smoke test at `test/widget_test.dart`
 - `flutter run` — runs on Android only (other platforms removed)
 - `firebase deploy --only firestore:rules` — push security rules to `society-app-1f904`
+- `firebase deploy --only firestore:indexes` — deploy composite indexes for events (buildingCode + eventDate) and issues (buildingCode + createdAt DESC, tenantId + createdAt DESC)
 
 ---
 

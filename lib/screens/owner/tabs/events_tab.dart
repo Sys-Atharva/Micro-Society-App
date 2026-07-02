@@ -30,6 +30,18 @@ class _EventsTabState extends State<EventsTab> {
   }
 
   void _showAddEventDialog() {
+    final eventProvider = context.read<EventProvider>();
+    final auth = context.read<AuthProvider>();
+    final buildingCode = auth.userModel?.buildingCode;
+    final createdBy = auth.firebaseUser?.uid;
+
+    if (buildingCode == null || buildingCode.isEmpty || createdBy == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User data not ready. Please re-login.')),
+      );
+      return;
+    }
+
     _titleController.clear();
     _descriptionController.clear();
     _locationController.clear();
@@ -135,13 +147,23 @@ class _EventsTabState extends State<EventsTab> {
             ),
             TextButton(
               onPressed: () async {
-                if (_titleController.text.trim().isEmpty ||
-                    _selectedDate == null) {
+                if (_titleController.text.trim().isEmpty) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please enter an event title')),
+                    );
+                  }
+                  return;
+                }
+                if (_selectedDate == null) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please select an event date')),
+                    );
+                  }
                   return;
                 }
 
-                final eventProvider = context.read<EventProvider>();
-                final auth = context.read<AuthProvider>();
                 final eventId =
                     DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -153,17 +175,26 @@ class _EventsTabState extends State<EventsTab> {
 
                 final event = EventModel(
                   eventId: eventId,
-                  buildingCode: auth.userModel?.buildingCode ?? '',
+                  buildingCode: buildingCode,
                   title: _titleController.text.trim(),
                   description: _descriptionController.text.trim(),
                   location: _locationController.text.trim(),
                   eventDate: _selectedDate,
                   eventTime: eventTimeStr,
                   status: 'upcoming',
-                  createdBy: auth.firebaseUser?.uid ?? '',
+                  createdBy: createdBy,
+                  createdAt: DateTime.now(),
                 );
-                await eventProvider.addEvent(event);
-                if (context.mounted) Navigator.pop(context);
+                final error = await eventProvider.addEvent(event);
+                if (context.mounted) {
+                  if (error != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to add event: $error')),
+                    );
+                    return;
+                  }
+                  Navigator.pop(context);
+                }
               },
               child: const Text('Add'),
             ),
@@ -174,6 +205,7 @@ class _EventsTabState extends State<EventsTab> {
   }
 
   void _confirmDelete(EventModel event) {
+    final eventProvider = context.read<EventProvider>();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -204,9 +236,7 @@ class _EventsTabState extends State<EventsTab> {
           ),
           TextButton(
             onPressed: () async {
-              final error = await context
-                  .read<EventProvider>()
-                  .deleteEvent(event.eventId);
+              final error = await eventProvider.deleteEvent(event.eventId);
               if (error != null && ctx.mounted) {
                 ScaffoldMessenger.of(ctx).showSnackBar(
                   SnackBar(content: Text(error)),
@@ -440,14 +470,20 @@ class _EventCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                onSelected: (value) {
+                onSelected: (value) async {
                   if (value == 'delete') {
                     onDelete();
                   } else if (value == 'completed' ||
                       value == 'cancelled' ||
                       value == 'upcoming') {
-                    context.read<EventProvider>().updateEvent(
-                        event.eventId, {'status': value});
+                    final error = await context
+                        .read<EventProvider>()
+                        .updateEvent(event.eventId, {'status': value});
+                    if (error != null && context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(error)),
+                      );
+                    }
                   }
                 },
                 itemBuilder: (context) => [

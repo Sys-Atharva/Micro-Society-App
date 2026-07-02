@@ -17,6 +17,7 @@ class AuthProvider extends ChangeNotifier {
   UserModel? _userModel;
   StreamSubscription<User?>? _authSubscription;
   Completer<void>? _authCompleter;
+  bool _isRegistering = false;
 
   AuthStatus get status => _status;
   User? get firebaseUser => _firebaseUser;
@@ -34,6 +35,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> _onAuthStateChanged(User? user) async {
+    if (_isRegistering) return;
+
     if (user == null) {
       _status = AuthStatus.unauthenticated;
       _firebaseUser = null;
@@ -123,6 +126,7 @@ class AuthProvider extends ChangeNotifier {
     required String name,
     required String role,
   }) async {
+    _isRegistering = true;
     try {
       _status = AuthStatus.loading;
       notifyListeners();
@@ -134,6 +138,7 @@ class AuthProvider extends ChangeNotifier {
 
       final user = credential.user;
       if (user == null) {
+        _isRegistering = false;
         return 'Registration failed';
       }
 
@@ -157,12 +162,20 @@ class AuthProvider extends ChangeNotifier {
         data: userModel.toMap(),
       );
 
+      _firebaseUser = user;
+      _userModel = userModel;
+      _status = AuthStatus.authenticated;
+      notifyListeners();
+
+      _isRegistering = false;
       return null;
     } on FirebaseAuthException catch (e) {
+      _isRegistering = false;
       _status = AuthStatus.unauthenticated;
       notifyListeners();
       return e.message ?? 'Registration failed';
     } catch (e) {
+      _isRegistering = false;
       _status = AuthStatus.unauthenticated;
       notifyListeners();
       return 'An unexpected error occurred';
