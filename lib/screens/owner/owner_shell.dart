@@ -6,6 +6,7 @@ import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/event_provider.dart';
 import 'package:micro_society_app/providers/flat_provider.dart';
 import 'package:micro_society_app/providers/issue_provider.dart';
+import 'package:micro_society_app/providers/tenant_request_provider.dart';
 import 'package:micro_society_app/screens/owner/tabs/events_tab.dart';
 import 'package:micro_society_app/screens/owner/tabs/flats_tab.dart';
 import 'package:micro_society_app/screens/owner/tabs/home_tab.dart';
@@ -55,6 +56,7 @@ class _OwnerShellState extends State<OwnerShell> {
       context.read<FlatProvider>().streamFlatsByBuilding(buildingCode);
       context.read<IssueProvider>().streamIssuesByBuilding(buildingCode);
       context.read<EventProvider>().streamEventsByBuilding(buildingCode);
+      context.read<TenantRequestProvider>().streamPendingTenants(buildingCode);
     } else if (ownerId != null) {
       context.read<FlatProvider>().streamFlatsByOwner(ownerId);
     }

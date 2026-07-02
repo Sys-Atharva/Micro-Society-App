@@ -4,6 +4,7 @@ import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/event_provider.dart';
 import 'package:micro_society_app/providers/flat_provider.dart';
 import 'package:micro_society_app/providers/issue_provider.dart';
+import 'package:micro_society_app/providers/tenant_request_provider.dart';
 import 'package:micro_society_app/providers/user_provider.dart';
 import 'package:micro_society_app/screens/auth/login_screen.dart';
 import 'package:micro_society_app/screens/auth/register_screen.dart';
@@ -36,6 +37,7 @@ class MicroSocietyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FlatProvider()),
         ChangeNotifierProvider(create: (_) => IssueProvider()),
         ChangeNotifierProvider(create: (_) => EventProvider()),
+        ChangeNotifierProvider(create: (_) => TenantRequestProvider()),
       ],
       child: MaterialApp(
         title: 'Micro Society',

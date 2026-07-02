@@ -4,6 +4,7 @@ import 'package:micro_society_app/config/theme.dart';
 import 'package:micro_society_app/models/flat_model.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/flat_provider.dart';
+import 'package:micro_society_app/providers/tenant_request_provider.dart';
 import 'package:micro_society_app/widgets/reusable/status_badge.dart';
 import 'package:provider/provider.dart';
 
@@ -404,90 +405,172 @@ class _FlatCard extends StatelessWidget {
           color: AppTheme.outlineVariantColor.withAlpha(60),
         ),
       ),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: AppTheme.secondaryColor.withAlpha(20),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.meeting_room_rounded,
-              color: AppTheme.secondaryColor,
-              size: 20,
-            ),
+          Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppTheme.secondaryColor.withAlpha(20),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.meeting_room_rounded,
+                  color: AppTheme.secondaryColor,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Flat ${flat.flatNumber}',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.onSurfaceColor,
+                      ),
+                    ),
+                    Text(
+                      [
+                        if (flat.buildingWing != null &&
+                            flat.buildingWing!.isNotEmpty)
+                          'Wing ${flat.buildingWing}',
+                        if (flat.flatFloor != null && flat.flatFloor!.isNotEmpty)
+                          'Floor ${flat.flatFloor}',
+                        'Building: ${flat.buildingCode}',
+                      ].join(' \u2022 '),
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppTheme.onPrimaryContainerColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              StatusBadge(status: flat.status),
+              if (flat.status != 'pending') ...[
+                const SizedBox(width: 8),
+                PopupMenuButton<String>(
+                  icon: const Icon(
+                    Icons.more_vert_rounded,
+                    color: AppTheme.onSurfaceVariantColor,
+                    size: 20,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onSelected: (value) {
+                    if (value == 'delete') onDelete();
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem<String>(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.delete_outline_rounded,
+                            color: AppTheme.errorColor,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Delete',
+                            style: GoogleFonts.inter(
+                                color: AppTheme.errorColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ],
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          if (flat.status == 'pending') ...[
+            const SizedBox(height: 12),
+            Row(
               children: [
-                Text(
-                  'Flat ${flat.flatNumber}',
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.onSurfaceColor,
+                Expanded(
+                  child: SizedBox(
+                    height: 36,
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        if (flat.tenantId == null) return;
+                        final error = await context
+                            .read<TenantRequestProvider>()
+                            .approveTenant(
+                              tenantId: flat.tenantId!,
+                              flatId: flat.flatId,
+                            );
+                        if (error != null && context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error)),
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.check_circle_rounded, size: 16),
+                      label: Text(
+                        'Approve',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF059669),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  [
-                    if (flat.buildingWing != null &&
-                        flat.buildingWing!.isNotEmpty)
-                      'Wing ${flat.buildingWing}',
-                    if (flat.flatFloor != null && flat.flatFloor!.isNotEmpty)
-                      'Floor ${flat.flatFloor}',
-                    'Building: ${flat.buildingCode}',
-                  ].join(' \u2022 '),
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    color: AppTheme.onPrimaryContainerColor,
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SizedBox(
+                    height: 36,
+                    child: OutlinedButton.icon(
+                      onPressed: () async {
+                        if (flat.tenantId == null) return;
+                        final error = await context
+                            .read<TenantRequestProvider>()
+                            .rejectTenant(
+                              tenantId: flat.tenantId!,
+                              flatId: flat.flatId,
+                            );
+                        if (error != null && context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error)),
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.cancel_rounded, size: 16),
+                      label: Text(
+                        'Reject',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: const Color(0xFFBA1A1A),
+                        side: const BorderSide(color: Color(0xFFBA1A1A)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              StatusBadge(status: flat.status),
-              const SizedBox(width: 8),
-              PopupMenuButton<String>(
-                icon: const Icon(
-                  Icons.more_vert_rounded,
-                  color: AppTheme.onSurfaceVariantColor,
-                  size: 20,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                onSelected: (value) {
-                  if (value == 'delete') onDelete();
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem<String>(
-                    value: 'delete',
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.delete_outline_rounded,
-                          color: AppTheme.errorColor,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Delete',
-                          style: GoogleFonts.inter(color: AppTheme.errorColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          ],
         ],
       ),
     );

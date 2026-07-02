@@ -81,4 +81,17 @@ class UserProvider extends ChangeNotifier {
     );
     return data.map((d) => UserModel.fromMap(d, d['id'] as String)).toList();
   }
+
+  Future<UserModel?> getOwnerByBuilding(String buildingCode) async {
+    final data = await _firestoreService.getDocuments(
+      collection: 'users',
+      field: 'buildingCode',
+      isEqualTo: buildingCode,
+    );
+    final owners = data
+        .map((d) => UserModel.fromMap(d, d['id'] as String))
+        .where((u) => u.role == 'owner')
+        .toList();
+    return owners.isNotEmpty ? owners.first : null;
+  }
 }

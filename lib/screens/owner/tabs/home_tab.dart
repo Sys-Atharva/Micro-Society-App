@@ -6,6 +6,7 @@ import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/event_provider.dart';
 import 'package:micro_society_app/providers/flat_provider.dart';
 import 'package:micro_society_app/providers/issue_provider.dart';
+import 'package:micro_society_app/providers/tenant_request_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeTab extends StatelessWidget {
@@ -39,6 +40,10 @@ class HomeTab extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               _StatsGrid(),
+              const SizedBox(height: 28),
+              _buildSectionHeader('Pending Approvals', Icons.person_add_rounded),
+              const SizedBox(height: 12),
+              _PendingApprovalsList(),
               const SizedBox(height: 28),
               _buildSectionHeader('Upcoming Events', Icons.event_rounded),
               const SizedBox(height: 12),
@@ -428,6 +433,174 @@ class _RecentIssuesList extends StatelessWidget {
       default:
         return AppTheme.outlineColor;
     }
+  }
+}
+
+class _PendingApprovalsList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TenantRequestProvider>(
+      builder: (context, requestProvider, _) {
+        if (requestProvider.isLoading) {
+          return _buildShimmer();
+        }
+
+        final pending = requestProvider.pendingRequests;
+
+        if (pending.isEmpty) {
+          return _buildEmptyState(
+            icon: Icons.person_add_disabled_rounded,
+            message: 'No pending requests',
+          );
+        }
+
+        return Column(
+          children: pending.map((request) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppTheme.outlineVariantColor.withAlpha(60),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD97706).withAlpha(20),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.person_outline_rounded,
+                          color: Color(0xFFD97706),
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              request.tenant.name,
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.onSurfaceColor,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Flat ${request.flat.flatNumber}',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: AppTheme.onPrimaryContainerColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 40,
+                          child: ElevatedButton.icon(
+                            onPressed: () async {
+                              final error = await requestProvider
+                                  .approveTenant(
+                                tenantId: request.tenant.uid,
+                                flatId: request.flat.flatId,
+                              );
+                              if (error != null && context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(error)),
+                                );
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.check_circle_rounded,
+                              size: 18,
+                            ),
+                            label: Text(
+                              'Approve',
+                              style: GoogleFonts.inter(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF059669),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: SizedBox(
+                          height: 40,
+                          child: OutlinedButton.icon(
+                            onPressed: () async {
+                              final error = await requestProvider
+                                  .rejectTenant(
+                                tenantId: request.tenant.uid,
+                                flatId: request.flat.flatId,
+                              );
+                              if (error != null && context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(error)),
+                                );
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.cancel_rounded,
+                              size: 18,
+                            ),
+                            label: Text(
+                              'Reject',
+                              style: GoogleFonts.inter(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: const Color(0xFFBA1A1A),
+                              side: const BorderSide(
+                                color: Color(0xFFBA1A1A),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
   }
 }
 

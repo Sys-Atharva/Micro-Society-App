@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
@@ -15,6 +17,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen>
   bool _notificationsEnabled = false;
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
+  StreamSubscription? _userDocSubscription;
 
   @override
   void initState() {
@@ -27,10 +30,33 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen>
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
     _pulseController.repeat(reverse: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _listenForApproval();
+    });
+  }
+
+  void _listenForApproval() {
+    final auth = context.read<AuthProvider>();
+    final uid = auth.firebaseUser?.uid;
+    if (uid == null) return;
+
+    _userDocSubscription = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .listen((snap) async {
+      if (snap.data()?['approved'] == true && mounted) {
+        await context.read<AuthProvider>().refreshUser();
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/tenant/dashboard');
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
+    _userDocSubscription?.cancel();
     _pulseController.dispose();
     super.dispose();
   }

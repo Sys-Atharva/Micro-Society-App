@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:micro_society_app/models/flat_model.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
+import 'package:micro_society_app/providers/flat_provider.dart';
 import 'package:micro_society_app/services/firestore_service.dart';
 import 'package:micro_society_app/widgets/reusable/custom_text_field.dart';
 import 'package:micro_society_app/widgets/reusable/loading_button.dart';
@@ -105,6 +106,7 @@ class _JoinBuildingScreenState extends State<JoinBuildingScreen> {
     });
 
     final auth = context.read<AuthProvider>();
+    final flatProvider = context.read<FlatProvider>();
     final uid = auth.firebaseUser?.uid;
     if (uid == null) return;
 
@@ -117,6 +119,13 @@ class _JoinBuildingScreenState extends State<JoinBuildingScreen> {
           'flatId': _selectedFlatId,
         },
       );
+
+      if (!mounted) return;
+
+      await flatProvider.requestFlat(
+            flatId: _selectedFlatId!,
+            tenantId: uid,
+          );
 
       if (!mounted) return;
 

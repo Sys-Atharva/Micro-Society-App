@@ -132,6 +132,16 @@ class FlatProvider extends ChangeNotifier {
     }
   }
 
+  Future<String?> requestFlat({
+    required String flatId,
+    required String tenantId,
+  }) async {
+    return await updateFlat(flatId, {
+      'tenantId': tenantId,
+      'status': 'pending',
+    });
+  }
+
   Future<String?> assignTenant({
     required String flatId,
     required String tenantId,
