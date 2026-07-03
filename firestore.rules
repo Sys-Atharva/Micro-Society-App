@@ -1,21 +1,48 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function userBuildingCode() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.buildingCode;
+    }
+
+    function isOwner() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'owner';
+    }
+
+    function isUnassigned() {
+      let bc = get(/databases/$(database)/documents/users/$(request.auth.uid)).data.buildingCode;
+      return bc == null;
+    }
+
     match /users/{userId} {
       allow read: if request.auth != null;
       allow create: if request.auth != null && request.auth.uid == userId;
       allow update: if request.auth != null && 
         (request.auth.uid == userId || 
          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['approved']));
+      allow delete: if false;
     }
+
     match /flats/{flatId} {
-      allow read, write: if request.auth != null;
+      allow read: if request.auth != null && (isUnassigned() || resource.data.buildingCode == userBuildingCode());
+      allow create: if request.auth != null && request.resource.data.buildingCode == userBuildingCode() && isOwner();
+      allow update: if request.auth != null && resource.data.buildingCode == userBuildingCode();
+      allow delete: if request.auth != null && resource.data.buildingCode == userBuildingCode() && isOwner();
     }
+
     match /issues/{issueId} {
-      allow read, write: if request.auth != null;
+      allow read: if request.auth != null && resource.data.buildingCode == userBuildingCode();
+      allow create: if request.auth != null && request.resource.data.buildingCode == userBuildingCode();
+      allow update: if request.auth != null && resource.data.buildingCode == userBuildingCode();
+      allow delete: if request.auth != null && resource.data.buildingCode == userBuildingCode();
     }
+
     match /events/{eventId} {
-      allow read, write: if request.auth != null;
+      allow read: if request.auth != null && resource.data.buildingCode == userBuildingCode();
+      allow create: if request.auth != null && request.resource.data.buildingCode == userBuildingCode();
+      allow update: if request.auth != null && resource.data.buildingCode == userBuildingCode();
+      allow delete: if request.auth != null && resource.data.buildingCode == userBuildingCode();
     }
   }
 }

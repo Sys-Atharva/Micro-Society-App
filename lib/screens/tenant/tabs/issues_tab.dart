@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:micro_society_app/config/theme.dart';
 import 'package:micro_society_app/models/issue_model.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
+import 'package:micro_society_app/providers/flat_provider.dart';
 import 'package:micro_society_app/providers/issue_provider.dart';
 import 'package:micro_society_app/widgets/reusable/status_badge.dart';
 import 'package:provider/provider.dart';
@@ -29,9 +30,13 @@ class _IssuesTabState extends State<IssuesTab> {
   void _showAddIssueDialog() {
     final issueProvider = context.read<IssueProvider>();
     final auth = context.read<AuthProvider>();
+    final flatProvider = context.read<FlatProvider>();
     final buildingCode = auth.userModel?.buildingCode;
     final tenantId = auth.firebaseUser?.uid;
-    const flatNumber = 'Common';
+    final myFlat = auth.userModel?.flatId != null
+        ? flatProvider.allFlats.where((f) => f.flatId == auth.userModel!.flatId).firstOrNull
+        : null;
+    final flatNumber = myFlat?.flatNumber ?? auth.userModel?.flatId?.split('_').last ?? '';
 
     if (buildingCode == null || buildingCode.isEmpty || tenantId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
