@@ -7,6 +7,7 @@ class IssueModel {
   final String description;
   final String status;
   final String priority;
+  final String createdBy;
   final DateTime? createdAt;
 
   const IssueModel({
@@ -18,6 +19,7 @@ class IssueModel {
     required this.description,
     required this.status,
     this.priority = 'medium',
+    this.createdBy = '',
     this.createdAt,
   });
 
@@ -35,6 +37,7 @@ class IssueModel {
       description: map['description'] as String? ?? '',
       status: map['status'] as String? ?? 'open',
       priority: map['priority'] as String? ?? 'medium',
+      createdBy: map['createdBy'] as String? ?? '',
       createdAt: (map['createdAt'] as dynamic)?.toDate(),
     );
   }
@@ -48,6 +51,7 @@ class IssueModel {
       'description': description,
       'status': status,
       'priority': priority,
+      'createdBy': createdBy,
       'createdAt': createdAt ?? DateTime.now(),
     };
   }
@@ -61,6 +65,7 @@ class IssueModel {
     String? description,
     String? status,
     String? priority,
+    String? createdBy,
     DateTime? createdAt,
   }) {
     return IssueModel(
@@ -72,6 +77,7 @@ class IssueModel {
       description: description ?? this.description,
       status: status ?? this.status,
       priority: priority ?? this.priority,
+      createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
     );
   }

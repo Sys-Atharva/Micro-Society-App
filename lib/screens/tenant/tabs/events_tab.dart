@@ -375,8 +375,11 @@ class _EventsTabState extends State<EventsTab> {
                 itemCount: events.length,
                 itemBuilder: (context, index) {
                   final event = events[index];
+                  final currentUid = context.read<AuthProvider>().firebaseUser?.uid;
+                  final isCreator = event.createdBy == currentUid && currentUid != null;
                   return _EventCard(
                     event: event,
+                    isCreator: isCreator,
                     onDelete: () => _confirmDelete(event),
                   );
                 },
@@ -391,9 +394,14 @@ class _EventsTabState extends State<EventsTab> {
 
 class _EventCard extends StatelessWidget {
   final EventModel event;
+  final bool isCreator;
   final VoidCallback onDelete;
 
-  const _EventCard({required this.event, required this.onDelete});
+  const _EventCard({
+    required this.event,
+    required this.isCreator,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -461,7 +469,8 @@ class _EventCard extends StatelessWidget {
                 ),
                 StatusBadge(status: event.status),
                 const SizedBox(width: 4),
-                PopupMenuButton<String>(
+                if (isCreator)
+                  PopupMenuButton<String>(
                 icon: const Icon(
                   Icons.more_vert_rounded,
                   color: AppTheme.onSurfaceVariantColor,

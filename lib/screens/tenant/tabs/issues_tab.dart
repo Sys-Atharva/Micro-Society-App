@@ -119,6 +119,7 @@ class _IssuesTabState extends State<IssuesTab> {
                   buildingCode: buildingCode,
                   flatNumber: flatNumber,
                   tenantId: tenantId,
+                  createdBy: tenantId,
                   title: _titleController.text.trim(),
                   description: _descriptionController.text.trim(),
                   status: 'open',
@@ -315,8 +316,11 @@ class _IssuesTabState extends State<IssuesTab> {
                 itemCount: issues.length,
                 itemBuilder: (context, index) {
                   final issue = issues[index];
+                  final currentUid = context.read<AuthProvider>().firebaseUser?.uid;
+                  final isCreator = issue.createdBy == currentUid && currentUid != null;
                   return _IssueCard(
                     issue: issue,
+                    isCreator: isCreator,
                     onDelete: () => _confirmDelete(issue),
                     onStatusUpdate: (newStatus) async {
                       final error = await context
@@ -328,6 +332,11 @@ class _IssuesTabState extends State<IssuesTab> {
                         );
                       }
                     },
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      '/tenant/issue-detail',
+                      arguments: issue.issueId,
+                    ),
                   );
                 },
               );
@@ -341,196 +350,205 @@ class _IssuesTabState extends State<IssuesTab> {
 
 class _IssueCard extends StatelessWidget {
   final IssueModel issue;
+  final bool isCreator;
   final VoidCallback onDelete;
   final Function(String) onStatusUpdate;
+  final VoidCallback onTap;
 
   const _IssueCard({
     required this.issue,
+    required this.isCreator,
     required this.onDelete,
     required this.onStatusUpdate,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border(
-          left: BorderSide(
-            color: _getPriorityColor(issue.priority),
-            width: 3,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border(
+            left: BorderSide(
+              color: _getPriorityColor(issue.priority),
+              width: 3,
+            ),
           ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: _getStatusColor(issue.status).withAlpha(20),
-                    borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: _getStatusColor(issue.status).withAlpha(20),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      _getStatusIcon(issue.status),
+                      color: _getStatusColor(issue.status),
+                      size: 20,
+                    ),
                   ),
-                  child: Icon(
-                    _getStatusIcon(issue.status),
-                    color: _getStatusColor(issue.status),
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        issue.title,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.onSurfaceColor,
-                        ),
-                      ),
-                      if (issue.description.isNotEmpty)
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          issue.description,
+                          issue.title,
                           style: GoogleFonts.inter(
-                            fontSize: 12,
-                            color: AppTheme.onPrimaryContainerColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.onSurfaceColor,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                    ],
-                  ),
-                ),
-                StatusBadge(status: issue.status),
-                const SizedBox(width: 4),
-                PopupMenuButton<String>(
-                  icon: const Icon(
-                    Icons.more_vert_rounded,
-                    color: AppTheme.onSurfaceVariantColor,
-                    size: 20,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  onSelected: (value) {
-                    if (value == 'delete') {
-                      onDelete();
-                    } else if (value == 'in_progress' ||
-                        value == 'resolved' ||
-                        value == 'open') {
-                      onStatusUpdate(value);
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    if (issue.status != 'in_progress')
-                      PopupMenuItem(
-                        value: 'in_progress',
-                        child: Row(
-                          children: [
-                            const Icon(Icons.hourglass_top_rounded,
-                                size: 18, color: Color(0xFFD97706)),
-                            const SizedBox(width: 10),
-                            Text('Mark In Progress',
-                                style: GoogleFonts.inter(fontSize: 14)),
-                          ],
-                        ),
-                      ),
-                    if (issue.status != 'resolved')
-                      PopupMenuItem(
-                        value: 'resolved',
-                        child: Row(
-                          children: [
-                            const Icon(Icons.check_circle_outline_rounded,
-                                size: 18, color: Color(0xFF059669)),
-                            const SizedBox(width: 10),
-                            Text('Mark Resolved',
-                                style: GoogleFonts.inter(fontSize: 14)),
-                          ],
-                        ),
-                      ),
-                    if (issue.status != 'open')
-                      PopupMenuItem(
-                        value: 'open',
-                        child: Row(
-                          children: [
-                            const Icon(Icons.info_outline_rounded,
-                                size: 18, color: AppTheme.secondaryColor),
-                            const SizedBox(width: 10),
-                            Text('Mark Open',
-                                style: GoogleFonts.inter(fontSize: 14)),
-                          ],
-                        ),
-                      ),
-                    const PopupMenuDivider(),
-                    PopupMenuItem(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.delete_outline_rounded,
-                              size: 18, color: AppTheme.errorColor),
-                          const SizedBox(width: 10),
-                          Text('Delete',
-                              style: GoogleFonts.inter(
-                                  fontSize: 14, color: AppTheme.errorColor)),
-                        ],
-                      ),
+                        if (issue.description.isNotEmpty)
+                          Text(
+                            issue.description,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: AppTheme.onPrimaryContainerColor,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Icon(Icons.calendar_today_rounded,
-                    size: 12, color: AppTheme.outlineColor),
-                const SizedBox(width: 4),
-                Text(
-                  _formatDate(issue),
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    color: AppTheme.outlineColor,
                   ),
-                ),
-                const SizedBox(width: 12),
-                const Icon(Icons.meeting_room_rounded,
-                    size: 12, color: AppTheme.outlineColor),
-                const SizedBox(width: 4),
-                Text(
-                  'Flat ${issue.flatNumber}',
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    color: AppTheme.outlineColor,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: _getPriorityColor(issue.priority).withAlpha(20),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    issue.priority.toUpperCase(),
+                  StatusBadge(status: issue.status),
+                  const SizedBox(width: 4),
+                  if (isCreator)
+                    PopupMenuButton<String>(
+                      icon: const Icon(
+                        Icons.more_vert_rounded,
+                        color: AppTheme.onSurfaceVariantColor,
+                        size: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      onSelected: (value) {
+                        if (value == 'delete') {
+                          onDelete();
+                        } else if (value == 'in_progress' ||
+                            value == 'resolved' ||
+                            value == 'open') {
+                          onStatusUpdate(value);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        if (issue.status != 'in_progress')
+                          PopupMenuItem(
+                            value: 'in_progress',
+                            child: Row(
+                              children: [
+                                const Icon(Icons.hourglass_top_rounded,
+                                    size: 18, color: Color(0xFFD97706)),
+                                const SizedBox(width: 10),
+                                Text('Mark In Progress',
+                                    style: GoogleFonts.inter(fontSize: 14)),
+                              ],
+                            ),
+                          ),
+                        if (issue.status != 'resolved')
+                          PopupMenuItem(
+                            value: 'resolved',
+                            child: Row(
+                              children: [
+                                const Icon(Icons.check_circle_outline_rounded,
+                                    size: 18, color: Color(0xFF059669)),
+                                const SizedBox(width: 10),
+                                Text('Mark Resolved',
+                                    style: GoogleFonts.inter(fontSize: 14)),
+                              ],
+                            ),
+                          ),
+                        if (issue.status != 'open')
+                          PopupMenuItem(
+                            value: 'open',
+                            child: Row(
+                              children: [
+                                const Icon(Icons.info_outline_rounded,
+                                    size: 18, color: AppTheme.secondaryColor),
+                                const SizedBox(width: 10),
+                                Text('Mark Open',
+                                    style: GoogleFonts.inter(fontSize: 14)),
+                              ],
+                            ),
+                          ),
+                        const PopupMenuDivider(),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Row(
+                            children: [
+                              const Icon(Icons.delete_outline_rounded,
+                                  size: 18, color: AppTheme.errorColor),
+                              const SizedBox(width: 10),
+                              Text('Delete',
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14, color: AppTheme.errorColor)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(Icons.calendar_today_rounded,
+                      size: 12, color: AppTheme.outlineColor),
+                  const SizedBox(width: 4),
+                  Text(
+                    _formatDate(issue),
                     style: GoogleFonts.inter(
-                      fontSize: 9,
-                      fontWeight: FontWeight.w700,
-                      color: _getPriorityColor(issue.priority),
+                      fontSize: 11,
+                      color: AppTheme.outlineColor,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(width: 12),
+                  const Icon(Icons.meeting_room_rounded,
+                      size: 12, color: AppTheme.outlineColor),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Flat ${issue.flatNumber}',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: AppTheme.outlineColor,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: _getPriorityColor(issue.priority).withAlpha(20),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      issue.priority.toUpperCase(),
+                      style: GoogleFonts.inter(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        color: _getPriorityColor(issue.priority),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

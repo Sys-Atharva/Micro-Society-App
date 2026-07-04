@@ -60,6 +60,7 @@ class EventProvider extends ChangeNotifier {
         _isLoading = false;
         _errorMessage = null;
         notifyListeners();
+        checkAndAutoCompleteEvents();
       },
       onError: (error) {
         _isLoading = false;

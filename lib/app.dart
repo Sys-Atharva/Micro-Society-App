@@ -13,6 +13,7 @@ import 'package:micro_society_app/screens/common/splash_screen.dart';
 import 'package:micro_society_app/screens/owner/bank_details_screen.dart';
 import 'package:micro_society_app/screens/owner/edit_profile_screen.dart';
 import 'package:micro_society_app/screens/owner/event_detail_screen.dart';
+import 'package:micro_society_app/screens/owner/issue_detail_screen.dart';
 import 'package:micro_society_app/screens/owner/manage_flats_screen.dart';
 import 'package:micro_society_app/screens/owner/owner_dashboard.dart';
 import 'package:micro_society_app/screens/owner/privacy_screen.dart';
@@ -59,6 +60,11 @@ class MicroSocietyApp extends StatelessWidget {
           '/owner/event-detail': (context) => EventDetailScreen(
                 eventId: ModalRoute.of(context)!.settings.arguments as String,
               ),
+          '/owner/issue-detail': (context) {
+                final args = ModalRoute.of(context)?.settings.arguments;
+                final issueId = args is String ? args : '';
+                return IssueDetailScreen(issueId: issueId);
+              },
           '/tenant/dashboard': (context) => const TenantShell(),
           '/tenant/waiting': (context) => const WaitingRoomScreen(),
           '/tenant/join': (context) => const JoinBuildingScreen(),
@@ -67,6 +73,11 @@ class MicroSocietyApp extends StatelessWidget {
           '/tenant/event-detail': (context) => EventDetailScreen(
                 eventId: ModalRoute.of(context)!.settings.arguments as String,
               ),
+          '/tenant/issue-detail': (context) {
+                final args = ModalRoute.of(context)?.settings.arguments;
+                final issueId = args is String ? args : '';
+                return IssueDetailScreen(issueId: issueId);
+              },
         },
       ),
     );
