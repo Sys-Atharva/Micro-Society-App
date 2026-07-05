@@ -77,5 +77,27 @@ service cloud.firestore {
         && resource.data.buildingCode == userBuildingCode()
         && resource.data.createdBy == request.auth.uid;
     }
+
+    match /payments/{paymentId} {
+      allow read: if request.auth != null && resource.data.buildingCode == userBuildingCode();
+      allow create: if request.auth != null
+        && request.resource.data.buildingCode == userBuildingCode()
+        && request.resource.data.tenantId == request.auth.uid
+        && isOwner() == false;
+      allow update: if request.auth != null
+        && resource.data.buildingCode == userBuildingCode()
+        && (
+          (
+            isOwner()
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'ownerNote', 'paidDate'])
+          )
+          ||
+          (
+            resource.data.tenantId == request.auth.uid
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['transactionRef'])
+          )
+        );
+      allow delete: if false;
+    }
   }
 }

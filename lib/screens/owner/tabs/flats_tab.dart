@@ -19,12 +19,14 @@ class _FlatsTabState extends State<FlatsTab> {
   final _flatNumberController = TextEditingController();
   final _wingController = TextEditingController();
   final _floorController = TextEditingController();
+  final _rentAmountController = TextEditingController();
 
   @override
   void dispose() {
     _flatNumberController.dispose();
     _wingController.dispose();
     _floorController.dispose();
+    _rentAmountController.dispose();
     super.dispose();
   }
 
@@ -67,54 +69,68 @@ class _FlatsTabState extends State<FlatsTab> {
               ),
             ),
             const SizedBox(height: 12),
-            TextField(
-              controller: _floorController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Flat Floor',
-                hintText: 'e.g., 3',
+              TextField(
+                controller: _floorController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Flat Floor',
+                  hintText: 'e.g., 3',
+                ),
               ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: _rentAmountController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Monthly Rent (₹)',
+                  hintText: 'e.g., 8000',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              final flatId =
-                  '${buildingCode}_${_flatNumberController.text.trim()}';
-              final flat = FlatModel(
-                flatId: flatId,
-                flatNumber: _flatNumberController.text.trim(),
-                buildingCode: buildingCode,
-                buildingWing: _wingController.text.trim().isEmpty
-                    ? null
-                    : _wingController.text.trim(),
-                flatFloor: _floorController.text.trim().isEmpty
-                    ? null
-                    : _floorController.text.trim(),
-                status: 'vacant',
-                ownerId: ownerId,
-              );
-              final error = await flatProvider.addFlat(flat);
-              if (context.mounted) {
-                if (error != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Failed to add flat: $error')),
-                  );
-                  return;
+            TextButton(
+              onPressed: () async {
+                final flatId =
+                    '${buildingCode}_${_flatNumberController.text.trim()}';
+                final rentText = _rentAmountController.text.trim();
+                final flat = FlatModel(
+                  flatId: flatId,
+                  flatNumber: _flatNumberController.text.trim(),
+                  buildingCode: buildingCode,
+                  buildingWing: _wingController.text.trim().isEmpty
+                      ? null
+                      : _wingController.text.trim(),
+                  flatFloor: _floorController.text.trim().isEmpty
+                      ? null
+                      : _floorController.text.trim(),
+                  status: 'vacant',
+                  ownerId: ownerId,
+                  rentAmount: rentText.isNotEmpty
+                      ? int.tryParse(rentText)
+                      : null,
+                );
+                final error = await flatProvider.addFlat(flat);
+                if (context.mounted) {
+                  if (error != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to add flat: $error')),
+                    );
+                    return;
+                  }
+                  Navigator.pop(context);
+                  _flatNumberController.clear();
+                  _wingController.clear();
+                  _floorController.clear();
+                  _rentAmountController.clear();
                 }
-                Navigator.pop(context);
-                _flatNumberController.clear();
-                _wingController.clear();
-                _floorController.clear();
-              }
-            },
-            child: const Text('Add'),
-          ),
+              },
+              child: const Text('Add'),
+            ),
         ],
       ),
     );
@@ -236,124 +252,135 @@ class _FlatsTabState extends State<FlatsTab> {
                 ),
               ),
               GestureDetector(
-                onTap: _showAddFlatDialog,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppTheme.secondaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.add_rounded, color: Colors.white, size: 18),
-                      const SizedBox(width: 6),
-                      Text(
-                        'Add Flat',
-                        style: GoogleFonts.inter(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                  onTap: _showAddFlatDialog,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.secondaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.add_rounded, color: Colors.white, size: 18),
+                        const SizedBox(width: 6),
+                        Text(
+                          'Add Flat',
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
         _buildFilterChips(),
         Expanded(
-          child: Consumer<FlatProvider>(
-            builder: (context, flatProvider, _) {
-              if (flatProvider.isLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (flatProvider.errorMessage != null) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline_rounded,
-                        size: 56,
-                        color: AppTheme.errorColor,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        flatProvider.errorMessage!,
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          color: AppTheme.onPrimaryContainerColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-
-              if (flatProvider.flats.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.meeting_room_outlined,
-                        size: 56,
-                        color: AppTheme.outlineVariantColor,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'No flats found',
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          color: AppTheme.onPrimaryContainerColor,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Add your first flat to get started',
-                        style: GoogleFonts.inter(
-                          fontSize: 13,
-                          color: AppTheme.outlineColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                itemCount: flatProvider.flats.length,
-                itemBuilder: (context, index) {
-                  final flat = flatProvider.flats[index];
-                  return _FlatCard(
-                    flat: flat,
-                    onDelete: () => _confirmDelete(context, flat),
-                  );
-                },
-              );
-            },
-          ),
+          child: _buildFlatsList(),
         ),
       ],
     );
   }
 
-  Widget _buildFilterChips() {
+  Widget _buildFlatsList() {
     return Consumer<FlatProvider>(
       builder: (context, flatProvider, _) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
+        if (flatProvider.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (flatProvider.errorMessage != null) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error_outline_rounded,
+                  size: 56,
+                  color: AppTheme.errorColor,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  flatProvider.errorMessage!,
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    color: AppTheme.onPrimaryContainerColor,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        if (flatProvider.flats.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.meeting_room_outlined,
+                  size: 56,
+                  color: AppTheme.outlineVariantColor,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'No flats found',
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    color: AppTheme.onPrimaryContainerColor,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Add your first flat to get started',
+                  style: GoogleFonts.inter(
+                    fontSize: 13,
+                    color: AppTheme.outlineColor,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+          itemCount: flatProvider.flats.length,
+          itemBuilder: (context, index) {
+            final flat = flatProvider.flats[index];
+            return GestureDetector(
+              onTap: () => Navigator.pushNamed(
+                context,
+                '/owner/flat-detail',
+                arguments: flat.flatId,
+              ),
+              child: _FlatCard(
+                flat: flat,
+                onDelete: () => _confirmDelete(context, flat),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterChips() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Consumer<FlatProvider>(
+          builder: (context, flatProvider, _) {
+            return Row(
               children: [
                 _FilterChip(
                   label: 'All',
@@ -379,10 +406,10 @@ class _FlatsTabState extends State<FlatsTab> {
                   onSelected: () => flatProvider.setStatusFilter('Pending'),
                 ),
               ],
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -496,74 +523,72 @@ class _FlatCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: SizedBox(
-                    height: 36,
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        if (flat.tenantId == null) return;
-                        final error = await context
-                            .read<TenantRequestProvider>()
-                            .approveTenant(
-                              tenantId: flat.tenantId!,
-                              flatId: flat.flatId,
-                            );
-                        if (error != null && context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error)),
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      if (flat.tenantId == null) return;
+                      final error = await context
+                          .read<TenantRequestProvider>()
+                          .approveTenant(
+                            tenantId: flat.tenantId!,
+                            flatId: flat.flatId,
                           );
-                        }
-                      },
-                      icon: const Icon(Icons.check_circle_rounded, size: 16),
-                      label: Text(
-                        'Approve',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      if (error != null && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error)),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.check_circle_rounded, size: 16),
+                    label: Text(
+                      'Approve',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF059669),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF059669),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: SizedBox(
-                    height: 36,
-                    child: OutlinedButton.icon(
-                      onPressed: () async {
-                        if (flat.tenantId == null) return;
-                        final error = await context
-                            .read<TenantRequestProvider>()
-                            .rejectTenant(
-                              tenantId: flat.tenantId!,
-                              flatId: flat.flatId,
-                            );
-                        if (error != null && context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error)),
+                  child: OutlinedButton.icon(
+                    onPressed: () async {
+                      if (flat.tenantId == null) return;
+                      final error = await context
+                          .read<TenantRequestProvider>()
+                          .rejectTenant(
+                            tenantId: flat.tenantId!,
+                            flatId: flat.flatId,
                           );
-                        }
-                      },
-                      icon: const Icon(Icons.cancel_rounded, size: 16),
-                      label: Text(
-                        'Reject',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      if (error != null && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error)),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.cancel_rounded, size: 16),
+                    label: Text(
+                      'Reject',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
                       ),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color(0xFFBA1A1A),
-                        side: const BorderSide(color: Color(0xFFBA1A1A)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFFBA1A1A),
+                      side: const BorderSide(color: Color(0xFFBA1A1A)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),

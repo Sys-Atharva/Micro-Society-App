@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:micro_society_app/models/user_model.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
@@ -15,6 +16,7 @@ class PaymentsScreen extends StatefulWidget {
 class _PaymentsScreenState extends State<PaymentsScreen> {
   UserModel? _owner;
   bool _isLoadingOwner = false;
+  bool _upiCopied = false;
 
   @override
   void initState() {
@@ -39,6 +41,14 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
         _isLoadingOwner = false;
       });
     }
+  }
+
+  void _copyUpiId(String upiId) {
+    Clipboard.setData(ClipboardData(text: upiId));
+    setState(() => _upiCopied = true);
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) setState(() => _upiCopied = false);
+    });
   }
 
   @override
@@ -82,7 +92,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
               if (_isLoadingOwner)
                 const CircularProgressIndicator()
               else if (_owner != null &&
-                  _owner!.bankDetails.bankName.isNotEmpty) ...[
+                  _owner!.bankDetails.upiId.isNotEmpty) ...[
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -93,7 +103,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Owner's Bank Details",
+                        "Owner's UPI ID",
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -101,26 +111,40 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        'Bank: ${_owner!.bankDetails.bankName}',
-                        style: GoogleFonts.inter(
-                          fontSize: 13,
-                          color: const Color(0xFF6B7280),
-                        ),
-                      ),
-                      Text(
-                        'Account: ${_owner!.bankDetails.accountNumber}',
-                        style: GoogleFonts.inter(
-                          fontSize: 13,
-                          color: const Color(0xFF6B7280),
-                        ),
-                      ),
-                      Text(
-                        'IFSC: ${_owner!.bankDetails.ifscCode}',
-                        style: GoogleFonts.inter(
-                          fontSize: 13,
-                          color: const Color(0xFF6B7280),
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _owner!.bankDetails.upiId,
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xFF4648D4),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => _copyUpiId(_owner!.bankDetails.upiId),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: _upiCopied
+                                    ? const Color(0xFF059669).withAlpha(20)
+                                    : const Color(0xFFE1E0FF),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                _upiCopied
+                                    ? Icons.check_rounded
+                                    : Icons.copy_rounded,
+                                size: 18,
+                                color: _upiCopied
+                                    ? const Color(0xFF059669)
+                                    : const Color(0xFF4648D4),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

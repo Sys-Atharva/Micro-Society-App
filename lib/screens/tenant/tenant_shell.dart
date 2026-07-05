@@ -6,6 +6,7 @@ import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/event_provider.dart';
 import 'package:micro_society_app/providers/flat_provider.dart';
 import 'package:micro_society_app/providers/issue_provider.dart';
+import 'package:micro_society_app/providers/payment_provider.dart';
 import 'package:micro_society_app/screens/tenant/tabs/events_tab.dart';
 import 'package:micro_society_app/screens/tenant/tabs/flats_tab.dart';
 import 'package:micro_society_app/screens/tenant/tabs/home_tab.dart';
@@ -33,11 +34,16 @@ class _TenantShellState extends State<TenantShell> {
   void _initializeStreams() {
     final auth = context.read<AuthProvider>();
     final buildingCode = auth.userModel?.buildingCode;
+    final tenantId = auth.firebaseUser?.uid;
 
     if (buildingCode != null) {
       context.read<FlatProvider>().streamFlatsByBuilding(buildingCode);
       context.read<IssueProvider>().streamIssuesByBuilding(buildingCode);
       context.read<EventProvider>().streamEventsByBuilding(buildingCode);
+    }
+
+    if (tenantId != null) {
+      context.read<PaymentProvider>().streamPaymentRequestsByTenant(tenantId);
     }
   }
 

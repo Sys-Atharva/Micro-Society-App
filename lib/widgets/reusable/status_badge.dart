@@ -34,16 +34,20 @@ class StatusBadge extends StatelessWidget {
         return const Color(0xFF6B7280);
       case 'occupied':
       case 'resolved':
+      case 'completed':
+      case 'approved':
+      case 'paid':
         return const Color(0xFF059669);
       case 'pending':
       case 'in_progress':
         return const Color(0xFFD97706);
       case 'upcoming':
         return const Color(0xFF4648D4);
-      case 'completed':
-        return const Color(0xFF059669);
       case 'cancelled':
-        return const Color(0xFFD97706);
+      case 'declined':
+      case 'unpaid':
+      case 'overdue':
+        return const Color(0xFFBA1A1A);
       default:
         return const Color(0xFF6B7280);
     }

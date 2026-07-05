@@ -7,6 +7,9 @@ class FlatModel {
   final String status;
   final String? tenantId;
   final String ownerId;
+  final int? rentAmount;
+  final int rentDueDay;
+  final DateTime? rentStartDate;
 
   const FlatModel({
     required this.flatId,
@@ -17,6 +20,9 @@ class FlatModel {
     required this.status,
     this.tenantId,
     required this.ownerId,
+    this.rentAmount,
+    this.rentDueDay = 5,
+    this.rentStartDate,
   });
 
   factory FlatModel.fromMap(Map<String, dynamic> map, String flatId) {
@@ -29,6 +35,9 @@ class FlatModel {
       status: map['status'] as String? ?? 'vacant',
       tenantId: map['tenantId'] as String?,
       ownerId: map['ownerId'] as String? ?? '',
+      rentAmount: map['rentAmount'] as int?,
+      rentDueDay: map['rentDueDay'] as int? ?? 5,
+      rentStartDate: (map['rentStartDate'] as dynamic)?.toDate(),
     );
   }
 
@@ -41,6 +50,9 @@ class FlatModel {
       'status': status,
       'tenantId': tenantId,
       'ownerId': ownerId,
+      'rentAmount': rentAmount,
+      'rentDueDay': rentDueDay,
+      'rentStartDate': rentStartDate,
     };
   }
 
@@ -53,6 +65,9 @@ class FlatModel {
     String? status,
     String? tenantId,
     String? ownerId,
+    int? rentAmount,
+    int? rentDueDay,
+    DateTime? rentStartDate,
   }) {
     return FlatModel(
       flatId: flatId ?? this.flatId,
@@ -63,6 +78,9 @@ class FlatModel {
       status: status ?? this.status,
       tenantId: tenantId ?? this.tenantId,
       ownerId: ownerId ?? this.ownerId,
+      rentAmount: rentAmount ?? this.rentAmount,
+      rentDueDay: rentDueDay ?? this.rentDueDay,
+      rentStartDate: rentStartDate ?? this.rentStartDate,
     );
   }
 }

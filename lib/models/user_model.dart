@@ -1,27 +1,19 @@
 class BankDetails {
-  final String bankName;
-  final String accountNumber;
-  final String ifscCode;
+  final String upiId;
 
   const BankDetails({
-    required this.bankName,
-    required this.accountNumber,
-    required this.ifscCode,
+    this.upiId = '',
   });
 
   factory BankDetails.fromMap(Map<String, dynamic> map) {
     return BankDetails(
-      bankName: map['bankName'] as String? ?? '',
-      accountNumber: map['accountNumber'] as String? ?? '',
-      ifscCode: map['ifscCode'] as String? ?? '',
+      upiId: map['upiId'] as String? ?? '',
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'bankName': bankName,
-      'accountNumber': accountNumber,
-      'ifscCode': ifscCode,
+      'upiId': upiId,
     };
   }
 }
@@ -48,11 +40,7 @@ class UserModel {
     required this.approved,
     this.buildingCode,
     this.flatId,
-    this.bankDetails = const BankDetails(
-      bankName: '',
-      accountNumber: '',
-      ifscCode: '',
-    ),
+    this.bankDetails = const BankDetails(),
     this.createdAt,
     this.phone,
     this.societyName,
@@ -70,7 +58,7 @@ class UserModel {
       flatId: map['flatId'] as String?,
       bankDetails: map['bankDetails'] != null
           ? BankDetails.fromMap(map['bankDetails'] as Map<String, dynamic>)
-          : const BankDetails(bankName: '', accountNumber: '', ifscCode: ''),
+          : const BankDetails(),
       createdAt: (map['createdAt'] as dynamic)?.toDate(),
       phone: map['phone'] as String?,
       societyName: map['societyName'] as String?,

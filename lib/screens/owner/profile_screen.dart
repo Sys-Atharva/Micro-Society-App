@@ -388,6 +388,13 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
           label: 'Property Address',
           value: user.propertyAddress,
         ),
+      if (user?.bankDetails.upiId != null &&
+          user!.bankDetails.upiId.isNotEmpty)
+        _DetailItem(
+          icon: Icons.payments_rounded,
+          label: 'UPI ID',
+          value: user.bankDetails.upiId,
+        ),
       const _DetailItem(
         icon: Icons.badge_outlined,
         label: 'Role',

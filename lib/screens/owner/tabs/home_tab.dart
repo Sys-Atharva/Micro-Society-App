@@ -547,78 +547,76 @@ class _PendingApprovalsList extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: SizedBox(
-                          height: 40,
-                          child: ElevatedButton.icon(
-                            onPressed: () async {
-                              final error = await requestProvider
-                                  .approveTenant(
-                                tenantId: request.tenant.uid,
-                                flatId: request.flat.flatId,
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            final error = await requestProvider
+                                .approveTenant(
+                              tenantId: request.tenant.uid,
+                              flatId: request.flat.flatId,
+                            );
+                            if (error != null && context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(error)),
                               );
-                              if (error != null && context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(error)),
-                                );
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.check_circle_rounded,
-                              size: 18,
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.check_circle_rounded,
+                            size: 18,
+                          ),
+                          label: Text(
+                            'Approve',
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
                             ),
-                            label: Text(
-                              'Approve',
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF059669),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF059669),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
-                        child: SizedBox(
-                          height: 40,
-                          child: OutlinedButton.icon(
-                            onPressed: () async {
-                              final error = await requestProvider
-                                  .rejectTenant(
-                                tenantId: request.tenant.uid,
-                                flatId: request.flat.flatId,
+                        child: OutlinedButton.icon(
+                          onPressed: () async {
+                            final error = await requestProvider
+                                .rejectTenant(
+                              tenantId: request.tenant.uid,
+                              flatId: request.flat.flatId,
+                            );
+                            if (error != null && context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(error)),
                               );
-                              if (error != null && context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(error)),
-                                );
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.cancel_rounded,
-                              size: 18,
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.cancel_rounded,
+                            size: 18,
+                          ),
+                          label: Text(
+                            'Reject',
+                            style: GoogleFonts.inter(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
                             ),
-                            label: Text(
-                              'Reject',
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: const Color(0xFFBA1A1A),
+                            side: const BorderSide(
+                              color: Color(0xFFBA1A1A),
                             ),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: const Color(0xFFBA1A1A),
-                              side: const BorderSide(
-                                color: Color(0xFFBA1A1A),
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),

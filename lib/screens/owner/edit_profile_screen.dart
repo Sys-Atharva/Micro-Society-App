@@ -19,6 +19,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController _phoneController;
   late TextEditingController _societyNameController;
   late TextEditingController _propertyAddressController;
+  late TextEditingController _upiIdController;
   bool _isLoading = false;
 
   @override
@@ -32,6 +33,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         TextEditingController(text: user?.societyName ?? '');
     _propertyAddressController =
         TextEditingController(text: user?.propertyAddress ?? '');
+    _upiIdController =
+        TextEditingController(text: user?.bankDetails.upiId ?? '');
   }
 
   @override
@@ -41,6 +44,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _phoneController.dispose();
     _societyNameController.dispose();
     _propertyAddressController.dispose();
+    _upiIdController.dispose();
     super.dispose();
   }
 
@@ -69,6 +73,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'phone': _phoneController.text.trim(),
         'societyName': _societyNameController.text.trim(),
         'propertyAddress': _propertyAddressController.text.trim(),
+        'bankDetails': {
+          'upiId': _upiIdController.text.trim(),
+        },
       };
       await userProvider.updateUser(uid: uid, data: data);
       await auth.refreshUser();
@@ -123,6 +130,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             _buildEmailField(),
             const SizedBox(height: 14),
             _buildPhoneField(),
+            const SizedBox(height: 28),
+            _buildSectionHeader('Payment'),
+            const SizedBox(height: 12),
+            _buildUpiIdField(),
             const SizedBox(height: 28),
             _buildSectionHeader('Property Details'),
             const SizedBox(height: 12),
@@ -271,6 +282,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       label: 'Property Address',
       controller: _propertyAddressController,
       hintText: 'Enter property address',
+      optional: true,
+    );
+  }
+
+  Widget _buildUpiIdField() {
+    return _buildTextField(
+      label: 'UPI ID / VPA',
+      controller: _upiIdController,
+      hintText: 'owner@paytm',
       optional: true,
     );
   }

@@ -4,6 +4,7 @@ import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/event_provider.dart';
 import 'package:micro_society_app/providers/flat_provider.dart';
 import 'package:micro_society_app/providers/issue_provider.dart';
+import 'package:micro_society_app/providers/payment_provider.dart';
 import 'package:micro_society_app/providers/tenant_request_provider.dart';
 import 'package:micro_society_app/providers/user_provider.dart';
 import 'package:micro_society_app/screens/auth/login_screen.dart';
@@ -13,6 +14,7 @@ import 'package:micro_society_app/screens/common/splash_screen.dart';
 import 'package:micro_society_app/screens/owner/bank_details_screen.dart';
 import 'package:micro_society_app/screens/owner/edit_profile_screen.dart';
 import 'package:micro_society_app/screens/owner/event_detail_screen.dart';
+import 'package:micro_society_app/screens/owner/flat_detail_screen.dart';
 import 'package:micro_society_app/screens/owner/issue_detail_screen.dart';
 import 'package:micro_society_app/screens/owner/manage_flats_screen.dart';
 import 'package:micro_society_app/screens/owner/owner_dashboard.dart';
@@ -38,6 +40,7 @@ class MicroSocietyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FlatProvider()),
         ChangeNotifierProvider(create: (_) => IssueProvider()),
         ChangeNotifierProvider(create: (_) => EventProvider()),
+        ChangeNotifierProvider(create: (_) => PaymentProvider()),
         ChangeNotifierProvider(create: (_) => TenantRequestProvider()),
       ],
       child: MaterialApp(
@@ -51,6 +54,11 @@ class MicroSocietyApp extends StatelessWidget {
           '/register': (context) => const RegisterScreen(),
           '/role-selection': (context) => const RoleSelectionScreen(),
           '/owner/dashboard': (context) => const OwnerDashboard(),
+          '/owner/flat-detail': (context) {
+                final args = ModalRoute.of(context)?.settings.arguments;
+                final flatId = args is String ? args : '';
+                return FlatDetailScreen(flatId: flatId);
+              },
           '/owner/flats': (context) => const ManageFlatsScreen(),
           '/owner/bank-details': (context) => const BankDetailsScreen(),
           '/owner/profile': (context) => const OwnerProfileScreen(),

@@ -7,4 +7,5 @@ class AppConfig {
   static const String flatsCollection = 'flats';
   static const String issuesCollection = 'issues';
   static const String eventsCollection = 'events';
+  static const String paymentsCollection = 'payments';
 }

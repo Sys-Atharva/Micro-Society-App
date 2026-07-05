@@ -54,7 +54,7 @@ class UserProvider extends ChangeNotifier {
           bankDetails: data['bankDetails'] != null
               ? BankDetails.fromMap(
                   data['bankDetails'] as Map<String, dynamic>)
-              : null,
+              : _userModel!.bankDetails,
         );
       }
 
@@ -80,6 +80,21 @@ class UserProvider extends ChangeNotifier {
       isEqualTo: buildingCode,
     );
     return data.map((d) => UserModel.fromMap(d, d['id'] as String)).toList();
+  }
+
+  Future<UserModel?> getUserById(String uid) async {
+    try {
+      final data = await _firestoreService.getDocument(
+        collection: 'users',
+        docId: uid,
+      );
+      if (data != null) {
+        return UserModel.fromMap(data, uid);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<UserModel?> getOwnerByBuilding(String buildingCode) async {

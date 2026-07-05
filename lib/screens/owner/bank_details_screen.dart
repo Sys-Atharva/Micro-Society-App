@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:micro_society_app/config/theme.dart';
 import 'package:micro_society_app/providers/auth_provider.dart';
 import 'package:micro_society_app/providers/user_provider.dart';
-import 'package:micro_society_app/widgets/reusable/custom_text_field.dart';
 import 'package:micro_society_app/widgets/reusable/loading_button.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +15,8 @@ class BankDetailsScreen extends StatefulWidget {
 
 class _BankDetailsScreenState extends State<BankDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _bankNameController = TextEditingController();
-  final _accountNumberController = TextEditingController();
-  final _ifscController = TextEditingController();
-  String _accountType = 'Savings';
+  final _upiIdController = TextEditingController();
   bool _isSaving = false;
-  bool _confirmationChecked = false;
   String? _errorMessage;
   String? _successMessage;
 
@@ -36,27 +32,18 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
     final auth = context.read<AuthProvider>();
     final user = auth.userModel;
     if (user != null) {
-      _bankNameController.text = user.bankDetails.bankName;
-      _accountNumberController.text = user.bankDetails.accountNumber;
-      _ifscController.text = user.bankDetails.ifscCode;
+      _upiIdController.text = user.bankDetails.upiId;
     }
   }
 
   @override
   void dispose() {
-    _bankNameController.dispose();
-    _accountNumberController.dispose();
-    _ifscController.dispose();
+    _upiIdController.dispose();
     super.dispose();
   }
 
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
-    if (!_confirmationChecked) {
-      setState(() =>
-          _errorMessage = 'Please confirm the verification checkbox');
-      return;
-    }
 
     setState(() {
       _isSaving = true;
@@ -74,10 +61,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
       uid: uid,
       data: {
         'bankDetails': {
-          'bankName': _bankNameController.text.trim(),
-          'accountNumber': _accountNumberController.text.trim(),
-          'ifscCode': _ifscController.text.trim().toUpperCase(),
-          'accountType': _accountType,
+          'upiId': _upiIdController.text.trim(),
         },
       },
     );
@@ -92,7 +76,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
       if (_isOnboarding) {
         Navigator.pushReplacementNamed(context, '/owner/dashboard');
       } else {
-        setState(() => _successMessage = 'Bank details saved successfully');
+        setState(() => _successMessage = 'UPI ID saved successfully');
       }
     }
   }
@@ -104,43 +88,18 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.surfaceColor,
       appBar: AppBar(
         leading: _isOnboarding
             ? IconButton(
                 icon: const Icon(Icons.arrow_back_rounded),
                 onPressed: _skipForLater,
               )
-            : null,
-        title: const Text('Payment Setup'),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: const Color(0xFFE1E0FF),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.security_rounded,
-                  size: 14,
-                  color: Color(0xFF4648D4),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  'Secure Connection',
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF4648D4),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+            : IconButton(
+                icon: const Icon(Icons.arrow_back_rounded),
+                onPressed: () => Navigator.pop(context),
+              ),
+        title: const Text('UPI Setup'),
       ),
       body: Container(
         width: double.infinity,
@@ -217,7 +176,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(
-                                Icons.account_balance_rounded,
+                                Icons.payments_rounded,
                                 color: Colors.white,
                                 size: 20,
                               ),
@@ -228,7 +187,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Verify Bank Details',
+                                    'Set Up UPI ID',
                                     style: GoogleFonts.inter(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -237,7 +196,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    'Please provide your settlement account details for society fund transfers.',
+                                    'Tenants will use this UPI ID to pay rent.',
                                     style: GoogleFonts.inter(
                                       fontSize: 12,
                                       color: const Color(0xFF45464D),
@@ -306,141 +265,66 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
                               ),
                               const SizedBox(height: 16),
                             ],
-                            CustomTextField(
-                              controller: _bankNameController,
-                              label: 'Bank Name',
-                              hint: 'Enter your bank name',
-                              prefixIcon: const Icon(
-                                  Icons.business_rounded),
+                            Text(
+                              'UPI ID / VPA',
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.onSurfaceColor,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            TextFormField(
+                              controller: _upiIdController,
+                              keyboardType: TextInputType.emailAddress,
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                color: AppTheme.onSurfaceColor,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'owner@paytm',
+                                hintStyle: GoogleFonts.inter(
+                                  color: AppTheme.onPrimaryContainerColor,
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.payments_rounded,
+                                  size: 20,
+                                ),
+                                filled: true,
+                                fillColor: AppTheme.surfaceContainerLow,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: AppTheme.secondaryColor,
+                                    width: 2,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 14,
+                                ),
+                              ),
                               validator: (value) {
-                                if (value == null ||
-                                    value.trim().isEmpty) {
-                                  return 'Please enter bank name';
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please enter your UPI ID';
+                                }
+                                if (!value.contains('@')) {
+                                  return 'Invalid UPI ID (e.g., name@bank)';
                                 }
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 16),
-                            CustomTextField(
-                              controller: _accountNumberController,
-                              label: 'Account Number',
-                              hint: 'Enter your account number',
-                              keyboardType: TextInputType.number,
-                              prefixIcon:
-                                  const Icon(Icons.credit_card_rounded),
-                              helperText:
-                                  'We encrypt your sensitive data with AES-256 standards',
-                              validator: (value) {
-                                if (value == null ||
-                                    value.trim().isEmpty) {
-                                  return 'Please enter account number';
-                                }
-                                if (value.length < 9) {
-                                  return 'Invalid account number';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextField(
-                                    controller: _ifscController,
-                                    label: 'IFSC Code',
-                                    hint: 'ABCD0123456',
-                                    textCapitalization:
-                                        TextCapitalization.characters,
-                                    prefixIcon:
-                                        const Icon(Icons.code_rounded),
-                                    validator: (value) {
-                                      if (value == null ||
-                                          value.trim().isEmpty) {
-                                        return 'Please enter IFSC code';
-                                      }
-                                      if (value.length < 8) {
-                                        return 'Invalid IFSC code';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: DropdownButtonFormField<String>(
-                                    initialValue: _accountType,
-                                    decoration: InputDecoration(
-                                      labelText: 'Account Type',
-                                      filled: true,
-                                      fillColor:
-                                          const Color(0xFFEFF4FF),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12),
-                                        borderSide: const BorderSide(
-                                            color:
-                                                Color(0xFFC6C6CD)),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12),
-                                        borderSide: const BorderSide(
-                                            color:
-                                                Color(0xFFC6C6CD)),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12),
-                                        borderSide: const BorderSide(
-                                            color: Color(0xFF4648D4),
-                                            width: 2),
-                                      ),
-                                    ),
-                                    items: const [
-                                      DropdownMenuItem(
-                                          value: 'Savings',
-                                          child: Text('Savings')),
-                                      DropdownMenuItem(
-                                          value: 'Current',
-                                          child: Text('Current')),
-                                      DropdownMenuItem(
-                                          value: 'Business',
-                                          child: Text('Business')),
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() =>
-                                          _accountType = value ?? 'Savings');
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: _confirmationChecked,
-                                  onChanged: (value) {
-                                    setState(() => _confirmationChecked =
-                                        value ?? false);
-                                  },
-                                  activeColor: const Color(0xFF4648D4),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(4),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'I confirm this account will receive penny-drop verification transaction',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 12,
-                                      color:
-                                          const Color(0xFF45464D),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(height: 12),
+                            Text(
+                              'Your UPI ID is the handle you use to receive payments (e.g., name@paytm, name@upi).',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: AppTheme.onPrimaryContainerColor,
+                              ),
                             ),
                           ],
                         ),
@@ -450,7 +334,7 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
                         children: [
                           _AssuranceBadge(
                             icon: Icons.verified_user_rounded,
-                            label: 'PCI-DSS\nCompliant',
+                            label: 'UPI\nSecure',
                           ),
                           SizedBox(width: 12),
                           _AssuranceBadge(
